@@ -1,0 +1,6 @@
+{
+  "name": "ScanForge",
+  "description": "Create beautiful, customizable, high-quality QR codes directly in your browser. Apple-inspired glass design, fully free and production-ready by Abdulhay.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
