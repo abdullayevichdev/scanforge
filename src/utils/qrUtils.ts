@@ -207,23 +207,48 @@ function svgToCanvas(svgElementId: string, resolution: number, backgroundColor?:
   return new Promise((resolve) => {
     const svg = document.getElementById(svgElementId);
     if (!svg) {
+      console.error(`svgToCanvas: element with id "${svgElementId}" not found`);
       resolve(null);
       return;
     }
 
     const clonedSvg = svg.cloneNode(true) as SVGSVGElement;
-    clonedSvg.setAttribute('width', resolution.toString());
-    clonedSvg.setAttribute('height', resolution.toString());
+
+    // Calculate aspect ratio from viewBox
+    const viewBoxAttr = svg.getAttribute('viewBox');
+    let vbWidth = 360;
+    let vbHeight = 360;
+    if (viewBoxAttr) {
+      const parts = viewBoxAttr.trim().split(/[\s,]+/).map(Number);
+      if (parts.length === 4 && parts[2] > 0 && parts[3] > 0) {
+        vbWidth = parts[2];
+        vbHeight = parts[3];
+      }
+    }
+    const aspect = vbHeight / vbWidth;
+    const canvasWidth = resolution;
+    const canvasHeight = Math.round(resolution * aspect);
+
+    clonedSvg.setAttribute('width', canvasWidth.toString());
+    clonedSvg.setAttribute('height', canvasHeight.toString());
+
+    if (!clonedSvg.getAttribute('xmlns')) {
+      clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    }
+    if (!clonedSvg.getAttribute('xmlns:xlink')) {
+      clonedSvg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    }
 
     const svgString = new XMLSerializer().serializeToString(clonedSvg);
     const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const blobURL = window.URL.createObjectURL(svgBlob);
 
     const image = new Image();
+    image.crossOrigin = 'anonymous';
     image.onload = () => {
       const canvas = document.createElement('canvas');
-      canvas.width = resolution;
-      canvas.height = resolution;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
       const context = canvas.getContext('2d');
       if (!context) {
         window.URL.revokeObjectURL(blobURL);
@@ -233,15 +258,16 @@ function svgToCanvas(svgElementId: string, resolution: number, backgroundColor?:
 
       if (backgroundColor && backgroundColor !== 'transparent') {
         context.fillStyle = backgroundColor;
-        context.fillRect(0, 0, resolution, resolution);
+        context.fillRect(0, 0, canvasWidth, canvasHeight);
       }
 
-      context.drawImage(image, 0, 0, resolution, resolution);
+      context.drawImage(image, 0, 0, canvasWidth, canvasHeight);
       window.URL.revokeObjectURL(blobURL);
       resolve(canvas);
     };
 
-    image.onerror = () => {
+    image.onerror = (err) => {
+      console.error('Image rendering from SVG failed:', err);
       window.URL.revokeObjectURL(blobURL);
       resolve(null);
     };
@@ -330,29 +356,31 @@ export async function downloadQRAsPDF(
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // Center QR code on page (140mm square)
-    const qrSize = 140;
-    const qrX = (pageWidth - qrSize) / 2;
-    const qrY = (pageHeight - qrSize) / 2 - 10;
+    // Center QR code on page with correct aspect ratio
+    const canvasAspect = canvas.height / canvas.width;
+    const qrWidth = 140;
+    const qrHeight = qrWidth * canvasAspect;
+    const qrX = (pageWidth - qrWidth) / 2;
+    const qrY = (pageHeight - qrHeight) / 2 - 5;
 
     // Background accent card
     pdf.setFillColor(248, 250, 252);
-    pdf.roundedRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 30, 8, 8, 'F');
+    pdf.roundedRect(qrX - 10, qrY - 10, qrWidth + 20, qrHeight + 20, 8, 8, 'F');
 
     // Embed QR code image
-    pdf.addImage(imgData, 'PNG', qrX, qrY, qrSize, qrSize);
+    pdf.addImage(imgData, 'PNG', qrX, qrY, qrWidth, qrHeight);
 
     // Header title
     pdf.setFont('helvetica', 'bold');
     pdf.setFontSize(18);
     pdf.setTextColor(19, 42, 134); // #132A86
-    pdf.text('ScanForge QR Code', pageWidth / 2, qrY - 22, { align: 'center' });
+    pdf.text('ScanForge QR Code', pageWidth / 2, qrY - 18, { align: 'center' });
 
     // Footer domain / tagline
     pdf.setFont('helvetica', 'normal');
     pdf.setFontSize(10);
     pdf.setTextColor(74, 87, 125);
-    pdf.text('Generated with ScanForge • scanforge.uz • High Print Resolution', pageWidth / 2, qrY + qrSize + 12, { align: 'center' });
+    pdf.text('Generated with ScanForge • scanforge.uz • High Print Resolution', pageWidth / 2, qrY + qrHeight + 14, { align: 'center' });
 
     pdf.save(`${filename}.pdf`);
     return true;
@@ -373,8 +401,26 @@ export function downloadQRAsSVG(svgElementId: string, filename: string, size: nu
   }
 
   const clonedSvg = svg.cloneNode(true) as SVGSVGElement;
+  const viewBoxAttr = svg.getAttribute('viewBox');
+  let vbWidth = 360;
+  let vbHeight = 360;
+  if (viewBoxAttr) {
+    const parts = viewBoxAttr.trim().split(/[\s,]+/).map(Number);
+    if (parts.length === 4 && parts[2] > 0 && parts[3] > 0) {
+      vbWidth = parts[2];
+      vbHeight = parts[3];
+    }
+  }
+  const aspect = vbHeight / vbWidth;
   clonedSvg.setAttribute('width', size.toString());
-  clonedSvg.setAttribute('height', size.toString());
+  clonedSvg.setAttribute('height', Math.round(size * aspect).toString());
+
+  if (!clonedSvg.getAttribute('xmlns')) {
+    clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  }
+  if (!clonedSvg.getAttribute('xmlns:xlink')) {
+    clonedSvg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+  }
 
   const svgString = new XMLSerializer().serializeToString(clonedSvg);
   const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });

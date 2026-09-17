@@ -53,10 +53,11 @@ interface QRInputFormProps {
 export const QRInputForm: React.FC<QRInputFormProps> = ({ activeType, value, onValueChange }) => {
   const { lang, t } = useLanguage();
 
+  const lastEmittedValue = React.useRef<string>('');
+
   // Local state for all 12 QR types
   const [url, setUrl] = useState(() => {
-    if (value && /^https?:\/\//i.test(value)) return value;
-    return '';
+    return value || 'https://scanforge.uz';
   });
 
   const [text, setText] = useState(() => {
@@ -128,11 +129,22 @@ export const QRInputForm: React.FC<QRInputFormProps> = ({ activeType, value, onV
 
   const [showPassword, setShowPassword] = useState(false);
 
-  // Sync url state when value prop changes externally (e.g. from history or template)
+  // Sync state when value prop changes externally (e.g. from history or template)
   useEffect(() => {
-    if (activeType === 'url' && value && value !== url) {
-      if (/^https?:\/\//i.test(value) || value.includes('.')) {
+    if (value !== undefined && value !== lastEmittedValue.current) {
+      lastEmittedValue.current = value;
+      if (activeType === 'url') {
         setUrl(value);
+      } else if (activeType === 'text') {
+        setText(value);
+      } else if (activeType === 'phone') {
+        setPhone(value.replace(/^tel:/i, ''));
+      } else if (activeType === 'telegram') {
+        const clean = value.replace(/^https?:\/\/t\.me\//i, '').replace(/^@/, '');
+        setTelegram({ username: clean });
+      } else if (activeType === 'instagram') {
+        const clean = value.replace(/^https?:\/\/instagram\.com\//i, '').replace(/^@/, '');
+        setInstagram({ username: clean });
       }
     }
   }, [value, activeType]);
@@ -145,7 +157,7 @@ export const QRInputForm: React.FC<QRInputFormProps> = ({ activeType, value, onV
         const trimmed = url.trim();
         if (!trimmed) {
           formatted = '';
-        } else if (!/^https?:\/\//i.test(trimmed)) {
+        } else if (!/^https?:\/\//i.test(trimmed) && !/^mailto:/i.test(trimmed) && !/^tel:/i.test(trimmed)) {
           formatted = `https://${trimmed}`;
         } else {
           formatted = trimmed;
@@ -186,6 +198,7 @@ export const QRInputForm: React.FC<QRInputFormProps> = ({ activeType, value, onV
         formatted = sms.phone ? formatSMSString(sms) : '';
         break;
     }
+    lastEmittedValue.current = formatted;
     onValueChange(formatted);
   }, [activeType, url, text, phone, email, whatsapp, telegram, instagram, wifi, vcard, location, event, sms]);
 

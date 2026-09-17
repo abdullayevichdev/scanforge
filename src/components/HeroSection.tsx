@@ -160,7 +160,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 {/* QR Canvas Display */}
                 <div className="bg-white/90 rounded-[26px] p-5 flex items-center justify-center shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6">
                   <div className="w-[240px] h-[240px] flex items-center justify-center">
-                    <QRRenderer value={heroConfig.content} config={heroConfig} sizePx={240} />
+                    <QRRenderer value={heroConfig.content} config={heroConfig} sizePx={240} svgId="scanforge-hero-preview-svg" />
                   </div>
                 </div>
 

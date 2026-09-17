@@ -251,7 +251,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="w-16 h-16 rounded-[16px] bg-slate-50 p-1.5 border border-slate-100 flex items-center justify-center shrink-0">
-                        <QRRenderer value={item.content} config={item.config} sizePx={56} />
+                        <QRRenderer value={item.content} config={item.config} sizePx={56} svgId={`scanforge-dashboard-${item.id}`} />
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-1.5">

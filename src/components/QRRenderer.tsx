@@ -21,6 +21,7 @@ interface QRRendererProps {
   value: string;
   config: QRStyleConfig;
   sizePx?: number;
+  svgId?: string;
   onSvgStringGenerated?: (svgString: string) => void;
 }
 
@@ -45,9 +46,13 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
   value,
   config,
   sizePx = 360,
+  svgId,
   onSvgStringGenerated,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const reactId = React.useId ? React.useId().replace(/[^a-zA-Z0-9]/g, '') : '';
+  const instanceId = useMemo(() => svgId || `sf-qr-${reactId || Math.random().toString(36).slice(2, 8)}`, [svgId, reactId]);
+
   const [qrCodeData, setQrCodeData] = useState<{
     size: number;
     modules: { get: (r: number, c: number) => number };
@@ -62,7 +67,8 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
         ecLevel = 'Q';
       }
 
-      const qr = QRCode.create(value || 'https://scanforge.uz', {
+      const contentToEncode = (value && value.trim().length > 0) ? value.trim() : 'https://scanforge.uz';
+      const qr = QRCode.create(contentToEncode, {
         errorCorrectionLevel: ecLevel,
       });
       setQrCodeData({
@@ -323,9 +329,10 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
         const iconSize = lw * 0.65;
         const ix = lcx - iconSize / 2;
         const iy = lcy - iconSize / 2;
+        const iconColor = config.colorType === 'solid' ? config.foregroundSolid : config.gradientColor1;
         logoContentNode = (
           <g transform={`translate(${ix}, ${iy})`}>
-            <IconComp size={iconSize} style={{ color: config.colorType === 'solid' ? config.foregroundSolid : config.gradientColor1 }} />
+            <IconComp size={iconSize} color={iconColor} stroke={iconColor} style={{ color: iconColor }} />
           </g>
         );
       }
@@ -333,6 +340,7 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
       logoContentNode = (
         <image 
           href={config.customLogoUrl} 
+          xlinkHref={config.customLogoUrl}
           x={lx} 
           y={ly} 
           width={lw} 
@@ -344,12 +352,12 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
     }
 
     return (
-      <g id="qr-logo-container">
+      <g id={`${instanceId}-logo-container`}>
         {bgNode}
         {logoContentNode}
       </g>
     );
-  }, [config, sizePx]);
+  }, [config, sizePx, instanceId]);
 
   if (!qrCodeData || !svgElements) {
     return (
@@ -366,25 +374,30 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
   const qrTranslateX = 12;
   const qrTranslateY = isTopFrame ? frameHeight + 12 : 12;
 
-  const fillStyle = config.colorType === 'gradient' ? 'url(#preview-qr-gradient)' : config.foregroundSolid;
+  const qrGradientId = `${instanceId}-qr-gradient`;
+  const bgGradientId = `${instanceId}-bg-gradient`;
+  const bgImgPatternId = `${instanceId}-bg-img-pattern`;
+
+  const fillStyle = config.colorType === 'gradient' ? `url(#${qrGradientId})` : config.foregroundSolid;
 
   // Background style
   let backgroundFill = 'transparent';
   if (config.backgroundType === 'solid') {
     backgroundFill = config.backgroundColor;
   } else if (config.backgroundType === 'gradient') {
-    backgroundFill = 'url(#preview-bg-gradient)';
+    backgroundFill = `url(#${bgGradientId})`;
   }
 
   return (
     <div 
       ref={containerRef} 
       className="relative flex flex-col items-center justify-center p-3 rounded-[32px] bg-white/90 shadow-2xl border border-white/90 select-none overflow-hidden max-w-full"
-      id="qr-preview-card"
+      id={`${instanceId}-card`}
     >
       <svg 
-        id="scanforge-preview-svg"
+        id={instanceId}
         xmlns="http://www.w3.org/2000/svg" 
+        xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox={`0 0 ${totalSvgWidth} ${totalSvgHeight}`}
         width="100%"
         height="100%"
@@ -398,7 +411,7 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
           {/* QR Code Foreground Gradient */}
           {config.colorType === 'gradient' && (
             <linearGradient 
-              id="preview-qr-gradient" 
+              id={qrGradientId} 
               x1="0%" 
               y1="0%" 
               x2={Math.cos((config.gradientAngle * Math.PI) / 180) > 0 ? '100%' : '0%'} 
@@ -411,7 +424,7 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
 
           {/* Background Gradient */}
           {config.backgroundType === 'gradient' && (
-            <linearGradient id="preview-bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id={bgGradientId} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor={config.bgGradientColor1} />
               <stop offset="100%" stopColor={config.bgGradientColor2} />
             </linearGradient>
@@ -419,15 +432,15 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
 
           {/* Background Image Pattern */}
           {config.backgroundType === 'image' && config.bgImageUrl && (
-            <pattern id="preview-bg-img-pattern" patternUnits="userSpaceOnUse" width={totalSvgWidth} height={totalSvgHeight}>
-              <image href={config.bgImageUrl} x="0" y="0" width={totalSvgWidth} height={totalSvgHeight} opacity={config.bgImageOpacity} preserveAspectRatio="xMidYMid slice" />
+            <pattern id={bgImgPatternId} patternUnits="userSpaceOnUse" width={totalSvgWidth} height={totalSvgHeight}>
+              <image href={config.bgImageUrl} xlinkHref={config.bgImageUrl} x="0" y="0" width={totalSvgWidth} height={totalSvgHeight} opacity={config.bgImageOpacity} preserveAspectRatio="xMidYMid slice" />
             </pattern>
           )}
         </defs>
 
         {/* Background Image Layer if active */}
         {config.backgroundType === 'image' && config.bgImageUrl && (
-          <rect width={totalSvgWidth} height={totalSvgHeight} fill="url(#preview-bg-img-pattern)" rx="24" />
+          <rect width={totalSvgWidth} height={totalSvgHeight} fill={`url(#${bgImgPatternId})`} rx="24" />
         )}
 
         {/* Frame Rendering with proportional dimensions */}

@@ -455,7 +455,7 @@ export const PosterCreator: React.FC<PosterCreatorProps> = ({ onShowToast }) => 
               {/* QR Code Embedded Display Card */}
               <div className="bg-white rounded-[26px] p-4.5 shadow-[0_12px_32px_rgba(19,42,134,0.08)] border border-black/5 flex flex-col items-center">
                 <div className="w-40 h-40 flex items-center justify-center">
-                  <QRRenderer value={qrUrl} config={posterQRConfig} sizePx={160} />
+                  <QRRenderer value={qrUrl} config={posterQRConfig} sizePx={160} svgId="scanforge-poster-preview-svg" />
                 </div>
                 <span className="text-[11px] font-black uppercase tracking-wider mt-2.5" style={{ color: accentColor }}>
                   {ctaText}

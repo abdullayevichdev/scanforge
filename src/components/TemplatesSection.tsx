@@ -242,7 +242,7 @@ export const TemplatesSection: React.FC<TemplatesSectionProps> = ({
                   {/* QR Preview Showcase */}
                   <div className="bg-slate-50/70 rounded-[22px] p-3 flex items-center justify-center mb-4 border border-[#132A86]/8 shadow-inner group-hover:bg-white transition-colors h-[175px] overflow-hidden">
                     <div className="flex items-center justify-center transform transition-transform duration-300 group-hover:scale-105">
-                      <QRRenderer value={tpl.content} config={tpl.config} sizePx={135} />
+                      <QRRenderer value={tpl.content} config={tpl.config} sizePx={135} svgId={`scanforge-template-${tpl.id}`} />
                     </div>
                   </div>
 

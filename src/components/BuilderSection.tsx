@@ -1082,7 +1082,7 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
               {/* Main SVG Render Display */}
               <div className="bg-white rounded-[28px] p-4 flex items-center justify-center mb-5 shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6">
                 <div className="w-full max-w-[280px] sm:max-w-[300px] flex items-center justify-center">
-                  <QRRenderer value={qrValue} config={config} sizePx={260} />
+                  <QRRenderer value={qrValue} config={config} sizePx={260} svgId="scanforge-preview-svg" />
                 </div>
               </div>
 
