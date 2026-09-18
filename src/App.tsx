@@ -24,6 +24,9 @@ import { AboutModal } from './components/AboutModal';
 import { MobileFloatingMenu } from './components/MobileFloatingMenu';
 import { Footer } from './components/Footer';
 import { ToastNotification, ToastItem } from './components/ToastNotification';
+import { UserEntryGateModal } from './components/UserEntryGateModal';
+import { AdminLoginModal } from './components/AdminLoginModal';
+import { AdminPanelModal } from './components/AdminPanelModal';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -31,7 +34,7 @@ const HISTORY_STORAGE_KEY = 'scanforge_saved_history_v1';
 
 function MainAppContent() {
   const { lang } = useLanguage();
-  const { canCreateQR, recordCreation } = useAuth();
+  const { canCreateQR, recordCreation, isAdminLoggedIn } = useAuth();
 
   // 1. Core QR State
   const [activeType, setActiveType] = useState<QRType>('url');
@@ -47,7 +50,17 @@ function MainAppContent() {
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
   const [dailyLimitModalOpen, setDailyLimitModalOpen] = useState(false);
   const [legalModalType, setLegalModalType] = useState<'privacy' | 'terms' | null>(null);
+  const [adminLoginOpen, setAdminLoginOpen] = useState(false);
+  const [adminPanelOpen, setAdminPanelOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastItem[]>([]);
+
+  const handleOpenAdmin = () => {
+    if (isAdminLoggedIn) {
+      setAdminPanelOpen(true);
+    } else {
+      setAdminLoginOpen(true);
+    }
+  };
 
   // Toast Helper
   const showToast = (title: string, message?: string, type: 'success' | 'warning' | 'info' = 'success') => {
@@ -350,6 +363,7 @@ function MainAppContent() {
       <Navbar 
         onOpenProfile={() => setProfileModalOpen(true)} 
         onOpenAbout={() => setAboutModalOpen(true)}
+        onOpenAdmin={handleOpenAdmin}
         savedCount={history.length} 
       />
 
@@ -436,6 +450,26 @@ function MainAppContent() {
       <Footer 
         onOpenLegal={(type) => setLegalModalType(type)} 
         onOpenAbout={() => setAboutModalOpen(true)}
+        onOpenAdmin={handleOpenAdmin}
+      />
+
+      {/* Mandatory User Entry Gate Modal (Liquid Glass Full-Screen) */}
+      <UserEntryGateModal />
+
+      {/* Admin Login Modal (Pin Verification) */}
+      <AdminLoginModal
+        isOpen={adminLoginOpen}
+        onClose={() => setAdminLoginOpen(false)}
+        onSuccess={() => {
+          setAdminLoginOpen(false);
+          setAdminPanelOpen(true);
+        }}
+      />
+
+      {/* Admin Real-Time Monitoring Panel Modal */}
+      <AdminPanelModal
+        isOpen={adminPanelOpen}
+        onClose={() => setAdminPanelOpen(false)}
       />
 
       {/* User Settings & Profile Modal (Section 52) */}

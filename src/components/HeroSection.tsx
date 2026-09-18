@@ -71,7 +71,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
 
             {/* Apple-like Typography Headlines */}
-            <h1 className="text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-[#0A143A] leading-[1.12] mb-5">
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-[#0A143A] leading-[1.15] sm:leading-[1.12] mb-4 sm:mb-5">
               <span className="block">{t.hero.headlineLine1}</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#132A86] via-[#0F267A] to-[#1FD0C2]">
                 {t.hero.headlineLine2}
@@ -79,17 +79,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </h1>
 
             {/* Supporting paragraph with generous line height and line width */}
-            <p className="max-w-2xl mx-auto lg:mx-0 text-base sm:text-lg text-[#4A577D] font-normal leading-relaxed mb-8">
+            <p className="max-w-2xl mx-auto lg:mx-0 text-sm sm:text-lg text-[#4A577D] font-normal leading-relaxed mb-6 sm:mb-8">
               {t.hero.supportingText}
             </p>
 
             {/* CTAs: Apple-Style Premium Glass Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4 mb-10">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 sm:mb-10">
               <button
                 type="button"
                 id="hero-primary-cta"
                 onClick={onGetStarted}
-                className="apple-glass-cta w-full sm:w-auto px-7 py-3.5 rounded-[18px] text-base font-semibold flex items-center justify-center gap-2.5 group cursor-pointer shadow-lg"
+                className="apple-glass-cta w-full sm:w-auto px-7 py-3.5 rounded-[18px] text-sm sm:text-base font-semibold flex items-center justify-center gap-2.5 group cursor-pointer shadow-lg touch-manipulation min-h-[48px]"
               >
                 <span>{t.hero.primaryCta}</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -99,7 +99,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 type="button"
                 id="hero-secondary-cta"
                 onClick={onExploreTemplates}
-                className="apple-glass-secondary w-full sm:w-auto px-7 py-3.5 rounded-[18px] text-base font-semibold flex items-center justify-center gap-2 cursor-pointer"
+                className="apple-glass-secondary w-full sm:w-auto px-7 py-3.5 rounded-[18px] text-sm sm:text-base font-semibold flex items-center justify-center gap-2 cursor-pointer touch-manipulation min-h-[48px]"
               >
                 <Layers className="w-4 h-4 text-[#132A86]" />
                 <span>{t.hero.secondaryCta}</span>
@@ -107,22 +107,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
 
             {/* Value Props & Indicators */}
-            <div className="pt-6 border-t border-[#132A86]/8 grid grid-cols-3 gap-3 sm:gap-4 max-w-lg mx-auto lg:mx-0">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#1FD0C2] shrink-0" />
-                <span className="text-xs sm:text-[13px] font-medium text-[#0A143A]">
+            <div className="pt-5 sm:pt-6 border-t border-[#132A86]/8 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto lg:mx-0">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1FD0C2] shrink-0" />
+                <span className="text-[11px] sm:text-[13px] font-medium text-[#0A143A]">
                   {t.hero.statFree}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#132A86] shrink-0" />
-                <span className="text-xs sm:text-[13px] font-medium text-[#0A143A]">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#132A86] shrink-0" />
+                <span className="text-[11px] sm:text-[13px] font-medium text-[#0A143A]">
                   {t.hero.statQuality}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-[#1FD0C2] shrink-0" />
-                <span className="text-xs sm:text-[13px] font-medium text-[#0A143A]">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <Smartphone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1FD0C2] shrink-0" />
+                <span className="text-[11px] sm:text-[13px] font-medium text-[#0A143A]">
                   {t.hero.statLimit}
                 </span>
               </div>
@@ -131,17 +131,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
           {/* Right Hero: Floating QR Preview Composition (Section 8 & 10) */}
           <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-[420px]">
+            <div className="relative w-full max-w-[380px] sm:max-w-[420px]">
               
               {/* Subtle back illumination glow */}
               <div className="absolute inset-4 rounded-[36px] bg-gradient-to-tr from-[#132A86]/10 to-[#1FD0C2]/15 blur-2xl -z-10" />
 
               {/* Elevated Glass Panel (32px to 40px radius as requested) */}
-              <div className="gentle-floating-card liquid-glass-elevated rounded-[34px] sm:rounded-[38px] p-6 sm:p-7 border border-white/90 shadow-[0_24px_50px_-12px_rgba(19,42,134,0.12)]">
+              <div className="gentle-floating-card liquid-glass-elevated rounded-[28px] sm:rounded-[38px] p-4 sm:p-7 border border-white/90 shadow-[0_24px_50px_-12px_rgba(19,42,134,0.12)]">
                 
                 {/* Header inside the floating glass card */}
-                <div className="flex items-center justify-between mb-5 pb-3 border-b border-[#132A86]/8">
-                  <div className="flex items-center gap-2.5">
+                <div className="flex items-center justify-between mb-4 sm:mb-5 pb-2.5 sm:pb-3 border-b border-[#132A86]/8">
+                  <div className="flex items-center gap-2 sm:gap-2.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-[#1FD0C2] animate-ping" />
                     <div>
                       <p className="text-xs font-bold text-[#132A86] tracking-tight">
@@ -158,9 +158,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </div>
 
                 {/* QR Canvas Display */}
-                <div className="bg-white/90 rounded-[26px] p-5 flex items-center justify-center shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6">
-                  <div className="w-[240px] h-[240px] flex items-center justify-center">
-                    <QRRenderer value={heroConfig.content} config={heroConfig} sizePx={240} svgId="scanforge-hero-preview-svg" />
+                <div className="bg-white/90 rounded-[22px] sm:rounded-[26px] p-3 sm:p-5 flex items-center justify-center shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6">
+                  <div className="w-[190px] h-[190px] sm:w-[240px] sm:h-[240px] flex items-center justify-center">
+                    <QRRenderer value={heroConfig.content} config={heroConfig} sizePx={220} svgId="scanforge-hero-preview-svg" />
                   </div>
                 </div>
 

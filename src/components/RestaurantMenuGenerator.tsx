@@ -264,11 +264,11 @@ export const RestaurantMenuGenerator: React.FC<RestaurantMenuGeneratorProps> = (
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           
-          {/* Controls (5 cols) */}
-          <div className="lg:col-span-5 liquid-glass rounded-[28px] p-6 sm:p-7 border border-white/90 shadow-sm space-y-4">
-            <h3 className="text-base font-bold text-[#0A143A] flex items-center gap-2 pb-3 border-b border-[#132A86]/8">
+          {/* Controls (Mobile: order-2, Desktop: order-1 lg:col-span-5) */}
+          <div className="order-2 lg:order-1 lg:col-span-5 liquid-glass rounded-[24px] sm:rounded-[28px] p-4 sm:p-7 border border-white/90 shadow-sm space-y-4">
+            <h3 className="text-sm sm:text-base font-bold text-[#0A143A] flex items-center gap-2 pb-3 border-b border-[#132A86]/8">
               <UtensilsCrossed className="w-4 h-4 text-[#132A86]" />
               <span>{lang === 'uz' ? 'Muassasa & Menyu Havolasi' : 'Restaurant Details'}</span>
             </h3>
@@ -289,14 +289,14 @@ export const RestaurantMenuGenerator: React.FC<RestaurantMenuGeneratorProps> = (
                     key={th.id}
                     type="button"
                     onClick={() => setData({ ...data, theme: th.id as any })}
-                    className={`p-2.5 rounded-[14px] text-left border text-xs transition-all cursor-pointer ${
+                    className={`p-2 sm:p-2.5 rounded-[12px] sm:rounded-[14px] text-left border text-xs transition-all cursor-pointer touch-manipulation ${
                       data.theme === th.id
-                        ? 'bg-[#132A86] text-white border-[#132A86]'
+                        ? 'bg-[#132A86] text-white border-[#132A86] shadow-xs'
                         : 'bg-white/70 text-[#0A143A] border-[#132A86]/10 hover:bg-white'
                     }`}
                   >
-                    <p className="font-bold">{th.name}</p>
-                    <p className={`text-[10px] ${data.theme === th.id ? 'text-white/80' : 'text-[#4A577D]'}`}>{th.desc}</p>
+                    <p className="font-bold text-xs truncate">{th.name}</p>
+                    <p className={`text-[10px] truncate ${data.theme === th.id ? 'text-white/80' : 'text-[#4A577D]'}`}>{th.desc}</p>
                   </button>
                 ))}
               </div>
@@ -345,7 +345,7 @@ export const RestaurantMenuGenerator: React.FC<RestaurantMenuGeneratorProps> = (
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-medium text-[#4A577D] block mb-1">
                   {lang === 'uz' ? 'Stol raqami (ixtiyoriy)' : 'Table Number'}
@@ -375,10 +375,10 @@ export const RestaurantMenuGenerator: React.FC<RestaurantMenuGeneratorProps> = (
 
           </div>
 
-          {/* Canvas Preview (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col items-center">
-            <div className="w-full liquid-glass-elevated rounded-[32px] p-6 sm:p-8 border border-white/90 shadow-lg flex flex-col items-center">
-              <div className="w-full flex items-center justify-between mb-4 pb-3 border-b border-[#132A86]/8">
+          {/* Canvas Preview (Mobile: order-1 top, Desktop: order-2 right lg:col-span-7) */}
+          <div className="order-1 lg:order-2 lg:col-span-7 flex flex-col items-center w-full">
+            <div className="w-full liquid-glass-elevated rounded-[26px] sm:rounded-[32px] p-4 sm:p-8 border border-white/90 shadow-lg flex flex-col items-center">
+              <div className="w-full flex items-center justify-between mb-3.5 sm:mb-4 pb-2.5 sm:pb-3 border-b border-[#132A86]/8">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#132A86] flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#1FD0C2]" />
                   {lang === 'uz' ? 'Stol Stendi Namoyishi' : 'Table Tent Live Preview'}
@@ -388,32 +388,32 @@ export const RestaurantMenuGenerator: React.FC<RestaurantMenuGeneratorProps> = (
                 </span>
               </div>
 
-              <div className="w-full max-w-[400px] rounded-[22px] overflow-hidden shadow-md border border-black/5 bg-slate-900/5">
+              <div className="w-full max-w-[340px] sm:max-w-[400px] rounded-[18px] sm:rounded-[22px] overflow-hidden shadow-md border border-black/5 bg-slate-900/5">
                 <canvas
                   ref={canvasRef}
-                  className="w-full h-auto rounded-[20px] object-contain"
+                  className="w-full h-auto rounded-[16px] sm:rounded-[20px] object-contain"
                 />
               </div>
 
-              <div className="w-full mt-6 pt-5 border-t border-[#132A86]/8">
-                <div className="grid grid-cols-3 gap-3">
+              <div className="w-full mt-4 sm:mt-6 pt-4 sm:pt-5 border-t border-[#132A86]/8">
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-3">
                   <button
                     type="button"
                     disabled={isExporting}
                     onClick={() => handleExport('png')}
-                    className="apple-glass-secondary py-3 px-4 rounded-[16px] text-xs font-bold text-[#132A86] flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] transition-transform"
+                    className="apple-glass-secondary py-2.5 sm:py-3 px-2 sm:px-4 rounded-[14px] sm:rounded-[16px] text-[11px] sm:text-xs font-bold text-[#132A86] flex items-center justify-center gap-1 sm:gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform"
                   >
-                    <Download className="w-4 h-4" />
-                    <span>PNG (High)</span>
+                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span>PNG</span>
                   </button>
 
                   <button
                     type="button"
                     disabled={isExporting}
                     onClick={() => handleExport('jpg')}
-                    className="apple-glass-secondary py-3 px-4 rounded-[16px] text-xs font-bold text-[#132A86] flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] transition-transform"
+                    className="apple-glass-secondary py-2.5 sm:py-3 px-2 sm:px-4 rounded-[14px] sm:rounded-[16px] text-[11px] sm:text-xs font-bold text-[#132A86] flex items-center justify-center gap-1 sm:gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform"
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span>JPG</span>
                   </button>
 
@@ -421,10 +421,10 @@ export const RestaurantMenuGenerator: React.FC<RestaurantMenuGeneratorProps> = (
                     type="button"
                     disabled={isExporting}
                     onClick={() => handleExport('pdf')}
-                    className="apple-glass-primary py-3 px-4 rounded-[16px] text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] transition-transform"
+                    className="apple-glass-primary py-2.5 sm:py-3 px-2 sm:px-4 rounded-[14px] sm:rounded-[16px] text-[11px] sm:text-xs font-bold text-white flex items-center justify-center gap-1 sm:gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform"
                   >
-                    <FileText className="w-4 h-4" />
-                    <span>PDF (A5 Print)</span>
+                    <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span>PDF</span>
                   </button>
                 </div>
               </div>

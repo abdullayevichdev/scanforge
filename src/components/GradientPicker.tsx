@@ -111,16 +111,16 @@ export const GradientPicker: React.FC<GradientPickerProps> = ({ config, onChange
             className="w-full accent-[#132A86] cursor-pointer"
           />
 
-          <div className="flex items-center justify-between gap-1 overflow-x-auto pt-1">
+          <div className="flex items-center gap-1 overflow-x-auto pt-1 pb-0.5 scrollbar-none touch-pan-x">
             {angles.map((a) => (
               <button
                 key={a}
                 type="button"
                 onClick={() => onChangeConfig(prev => ({ ...prev, gradientAngle: a }))}
-                className={`px-2 py-1 rounded-[8px] text-[11px] font-bold font-mono transition-all cursor-pointer ${
+                className={`min-w-[34px] min-h-[34px] px-2.5 py-1.5 rounded-[10px] text-xs font-bold font-mono transition-all cursor-pointer touch-manipulation flex items-center justify-center shrink-0 ${
                   config.gradientAngle === a
                     ? 'bg-[#132A86] text-white shadow-sm'
-                    : 'bg-white text-[#4A577D] hover:bg-[#EEF6FF] hover:text-[#132A86]'
+                    : 'bg-white text-[#4A577D] hover:bg-[#EEF6FF] hover:text-[#132A86] active:bg-slate-100'
                 }`}
               >
                 {a}°

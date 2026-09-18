@@ -354,14 +354,14 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
         </div>
 
         {/* Builder Layout Grid: Mobile preview first (order-1), desktop controls left (order-1 on lg) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-start">
           
           {/* Controls Column (Mobile: order-2, Desktop: order-1 lg:col-span-7) */}
-          <div className="order-2 lg:order-1 lg:col-span-7 space-y-6">
+          <div className="order-2 lg:order-1 lg:col-span-7 space-y-5 sm:space-y-6">
             
             {/* 1. Content Type Pill Selector (12 Types) */}
-            <div className="liquid-glass rounded-[24px] p-2.5 sm:p-3 border border-white/80 shadow-sm">
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+            <div className="liquid-glass rounded-[22px] sm:rounded-[24px] p-2 sm:p-3 border border-white/80 shadow-sm">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none touch-pan-x">
                 {typeTabs.map((tab) => {
                   const Icon = tab.icon;
                   const isActive = activeType === tab.id;
@@ -371,10 +371,10 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
                       type="button"
                       id={`tab-type-${tab.id}`}
                       onClick={() => setActiveType(tab.id)}
-                      className={`px-3.5 py-2 rounded-[16px] text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                      className={`px-3 sm:px-3.5 py-2.5 sm:py-2 rounded-[14px] sm:rounded-[16px] text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all duration-200 cursor-pointer touch-manipulation min-h-[40px] ${
                         isActive
                           ? 'bg-[#132A86] text-white shadow-md'
-                          : 'text-[#4A577D] hover:text-[#0A143A] hover:bg-white/70'
+                          : 'text-[#4A577D] hover:text-[#0A143A] hover:bg-white/70 active:bg-white'
                       }`}
                     >
                       <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#1FD0C2]' : 'text-[#132A86]'}`} />
@@ -386,7 +386,7 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
             </div>
 
             {/* 2. Dynamic Input Fields for Active Type */}
-            <div className="liquid-glass rounded-[28px] p-6 sm:p-7 border border-white/90 shadow-sm">
+            <div className="liquid-glass rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 lg:p-7 border border-white/90 shadow-sm">
               <QRInputForm 
                 activeType={activeType} 
                 value={qrValue}
@@ -395,11 +395,11 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
             </div>
 
             {/* 3. Design Studio Controls Card */}
-            <div className="liquid-glass rounded-[28px] p-6 sm:p-7 border border-white/90 shadow-sm">
+            <div className="liquid-glass rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 lg:p-7 border border-white/90 shadow-sm">
               
               {/* Studio Tabs & Actions Toolbar */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#132A86]/10 pb-4 mb-6">
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#132A86]/10 pb-4 mb-5 sm:mb-6">
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none touch-pan-x">
                   {[
                     { id: 'presets', label: t.builder.designTabs.presets, icon: Sparkles },
                     { id: 'design', label: t.builder.designTabs.shape, icon: Sliders },
@@ -416,10 +416,10 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
                         type="button"
                         id={`design-tab-${tab.id}`}
                         onClick={() => setActiveTab(tab.id as any)}
-                        className={`px-3 py-1.5 rounded-[14px] text-xs font-bold flex items-center gap-1.5 whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                        className={`px-3 py-2 sm:py-1.5 rounded-[12px] sm:rounded-[14px] text-xs font-bold flex items-center gap-1.5 whitespace-nowrap transition-all duration-200 cursor-pointer touch-manipulation min-h-[38px] ${
                           isActive
                             ? 'bg-[#132A86] text-white shadow-sm'
-                            : 'text-[#4A577D] hover:text-[#0A143A] hover:bg-white/70'
+                            : 'text-[#4A577D] hover:text-[#0A143A] hover:bg-white/70 active:bg-white'
                         }`}
                       >
                         <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#1FD0C2]' : 'text-[#132A86]'}`} />
@@ -1064,10 +1064,10 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
 
           {/* Live Preview Column (Mobile: order-1 top, Desktop: order-2 right lg:col-span-5) */}
           <div className="order-1 lg:order-2 lg:col-span-5 lg:sticky lg:top-24 space-y-4">
-            <div className="liquid-glass-elevated rounded-[32px] sm:rounded-[36px] p-6 sm:p-7 border border-white/90 shadow-xl">
+            <div className="liquid-glass-elevated rounded-[26px] sm:rounded-[36px] p-4 sm:p-7 border border-white/90 shadow-xl">
               
               {/* Preview Header */}
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#132A86]/8">
+              <div className="flex items-center justify-between mb-3 sm:mb-4 pb-2.5 sm:pb-3 border-b border-[#132A86]/8">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#1FD0C2] animate-pulse" />
                   <span className="text-xs font-bold text-[#132A86] uppercase tracking-wider">
@@ -1080,14 +1080,14 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
               </div>
 
               {/* Main SVG Render Display */}
-              <div className="bg-white rounded-[28px] p-4 flex items-center justify-center mb-5 shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6">
-                <div className="w-full max-w-[280px] sm:max-w-[300px] flex items-center justify-center">
+              <div className="bg-white rounded-[22px] sm:rounded-[28px] p-2.5 sm:p-4 flex items-center justify-center mb-4 sm:mb-5 shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6">
+                <div className="w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[300px] flex items-center justify-center">
                   <QRRenderer value={qrValue} config={config} sizePx={260} svgId="scanforge-preview-svg" />
                 </div>
               </div>
 
               {/* Quick Contrast Readability Ribbon */}
-              <div className="mb-4">
+              <div className="mb-3.5 sm:mb-4">
                 <ContrastWarning config={config} onAutoFix={autoFixContrast} />
               </div>
 
@@ -1096,16 +1096,16 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
                 type="button"
                 id="builder-download-btn"
                 onClick={() => setExportModalOpen(true)}
-                className="apple-glass-cta w-full py-4 rounded-[20px] text-sm font-extrabold flex items-center justify-center gap-2.5 cursor-pointer mb-3 shadow-lg hover:shadow-xl transition-all"
+                className="apple-glass-cta w-full py-3.5 sm:py-4 px-3 rounded-[18px] sm:rounded-[20px] text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 cursor-pointer mb-2.5 sm:mb-3 shadow-lg hover:shadow-xl transition-all touch-manipulation min-h-[46px]"
               >
-                <Download className="w-5 h-5 text-[#1FD0C2]" />
-                <span>
+                <Download className="w-4 h-4 sm:w-5 sm:h-5 text-[#1FD0C2]" />
+                <span className="truncate">
                   {lang === 'uz' ? 'Yuklab Olish (PNG, JPG, PDF, SVG)' : 'Export & Download (PNG, JPG, PDF, SVG)'}
                 </span>
               </button>
 
               {/* Secondary Action Grid: Copy, Share, Save */}
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                 <button
                   type="button"
                   onClick={handleCopyImage}

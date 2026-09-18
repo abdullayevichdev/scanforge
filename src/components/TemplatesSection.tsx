@@ -157,7 +157,7 @@ export const TemplatesSection: React.FC<TemplatesSectionProps> = ({
         </div>
 
         {/* Category Filter Pills (Horizontal Scroll) */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-8 scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 sm:mb-8 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 touch-pan-x">
           {categories.map((cat) => {
             const Icon = cat.icon;
             const isSelected = selectedCategory === cat.id;
@@ -168,7 +168,7 @@ export const TemplatesSection: React.FC<TemplatesSectionProps> = ({
                 key={cat.id}
                 type="button"
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-3.5 py-2 rounded-[16px] text-xs font-bold flex items-center gap-1.5 whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                className={`px-3 sm:px-3.5 py-2 rounded-[14px] sm:rounded-[16px] text-xs font-bold flex items-center gap-1.5 whitespace-nowrap transition-all duration-200 cursor-pointer touch-manipulation shrink-0 ${
                   isSelected
                     ? 'bg-[#132A86] text-white shadow-md'
                     : 'bg-white/80 text-[#4A577D] hover:text-[#0A143A] border border-[#132A86]/10 hover:bg-white'

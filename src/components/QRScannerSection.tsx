@@ -282,23 +282,23 @@ export const QRScannerSection: React.FC<QRScannerSectionProps> = ({
 
         {/* Scanner Card */}
         <div className="max-w-3xl mx-auto">
-          <div className="liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 border border-white/90 shadow-xl space-y-6">
+          <div className="liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[26px] sm:rounded-[36px] p-4 sm:p-8 border border-white/90 shadow-xl space-y-5 sm:space-y-6">
             
             {/* Mode Switcher */}
-            <div className="grid grid-cols-2 gap-2 p-1.5 rounded-[20px] bg-[#EEF6FF]/70 border border-[#132A86]/10 max-w-md mx-auto">
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2 p-1 sm:p-1.5 rounded-[16px] sm:rounded-[20px] bg-[#EEF6FF]/70 border border-[#132A86]/10 max-w-md mx-auto">
               <button
                 type="button"
                 onClick={() => {
                   setMode('upload');
                   stopCamera();
                 }}
-                className={`py-2.5 px-4 rounded-[16px] text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                className={`py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-[13px] sm:rounded-[16px] text-xs font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer touch-manipulation min-h-[40px] ${
                   mode === 'upload'
                     ? 'bg-white text-[#132A86] shadow-sm'
                     : 'text-[#4A577D] hover:text-[#0A143A]'
                 }`}
               >
-                <Upload className="w-4 h-4 text-[#1FD0C2]" />
+                <Upload className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1FD0C2]" />
                 <span>{lang === 'uz' ? 'Rasm Yuklash' : 'Upload Image'}</span>
               </button>
 
@@ -308,14 +308,14 @@ export const QRScannerSection: React.FC<QRScannerSectionProps> = ({
                   setMode('camera');
                   startCamera();
                 }}
-                className={`py-2.5 px-4 rounded-[16px] text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                className={`py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-[13px] sm:rounded-[16px] text-xs font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer touch-manipulation min-h-[40px] ${
                   mode === 'camera'
                     ? 'bg-white text-[#132A86] shadow-sm'
                     : 'text-[#4A577D] hover:text-[#0A143A]'
                 }`}
               >
-                <Camera className="w-4 h-4 text-[#1FD0C2]" />
-                <span>{lang === 'uz' ? 'Kamera Bilan Skanerlash' : 'Live Camera'}</span>
+                <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1FD0C2]" />
+                <span>{lang === 'uz' ? 'Kamera' : 'Live Camera'}</span>
               </button>
             </div>
 

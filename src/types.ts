@@ -179,6 +179,37 @@ export interface UserProfile {
   tier?: 'free' | 'pro' | 'enterprise';
   createdAt: number;
   settings?: UserSettings;
+  isOnline?: boolean;
+  currentSessionId?: string;
+  loginAt?: string;
+  lastSeenAt?: string;
+  logoutAt?: string | null;
+  sessionCount?: number;
+}
+
+export interface UserSession {
+  id: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  loginAt: string;
+  lastSeenAt: string;
+  logoutAt?: string | null;
+  status: 'online' | 'offline' | 'force_signed_out';
+  device?: string;
+  userAgent?: string;
+}
+
+export interface AdminActionRecord {
+  id: string;
+  action: string;
+  actionType: string;
+  targetUserId: string;
+  targetUserName?: string;
+  details?: string;
+  timestamp: string;
+  adminRole?: string;
 }
 
 export interface SavedQRCodeRecord {

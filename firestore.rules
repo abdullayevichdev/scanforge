@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['id', 'firstName', 'lastName', 'phone', 'isOnline', 'createdAt', 'updatedAt']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.firstName is string && data.firstName.size() <= 100 &&
+        data.lastName is string && data.lastName.size() <= 100 &&
+        data.phone is string && data.phone.size() <= 30 &&
+        data.isOnline is bool &&
+        data.createdAt is string &&
+        data.updatedAt is string;
+    }
+
+    function isValidSession(data) {
+      return data.keys().hasAll(['id', 'userId', 'firstName', 'lastName', 'phone', 'loginAt', 'lastSeenAt', 'status']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.userId is string && data.userId.size() <= 128 &&
+        data.firstName is string && data.firstName.size() <= 100 &&
+        data.lastName is string && data.lastName.size() <= 100 &&
+        data.phone is string && data.phone.size() <= 30 &&
+        data.status in ['online', 'offline', 'force_signed_out'];
+    }
+
+    function isValidAdminAction(data) {
+      return data.keys().hasAll(['id', 'action', 'actionType', 'timestamp']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.action is string && data.action.size() <= 200 &&
+        data.actionType is string && data.actionType.size() <= 50;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow read: if isValidId(userId);
+      allow create, update: if isValidId(userId) && isValidUser(request.resource.data);
+      allow delete: if isValidId(userId);
+    }
+
+    // Sessions Collection (visit logs & presence)
+    match /sessions/{sessionId} {
+      allow read: if isValidId(sessionId);
+      allow create, update: if isValidId(sessionId) && isValidSession(request.resource.data);
+      allow delete: if isValidId(sessionId);
+    }
+
+    // Admin Actions Log
+    match /adminActions/{actionId} {
+      allow read: if isValidId(actionId);
+      allow create, update: if isValidId(actionId) && isValidAdminAction(request.resource.data);
+      allow delete: if isValidId(actionId);
+    }
+  }
+}

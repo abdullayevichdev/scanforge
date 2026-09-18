@@ -269,14 +269,14 @@ export const PosterCreator: React.FC<PosterCreatorProps> = ({ onShowToast }) => 
           </p>
         </div>
 
-        {/* Studio Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Studio Grid: Mobile Preview on top (order-1), Controls below (order-2) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           
-          {/* Controls (lg:col-span-6) */}
-          <div className="lg:col-span-6 space-y-6">
+          {/* Controls (Mobile: order-2, Desktop: order-1 lg:col-span-6) */}
+          <div className="order-2 lg:order-1 lg:col-span-6 space-y-5 sm:space-y-6">
             
             {/* Theme Selector */}
-            <div className="liquid-glass rounded-[26px] p-5 border border-white/90 shadow-sm space-y-3">
+            <div className="liquid-glass rounded-[24px] sm:rounded-[26px] p-4 sm:p-5 border border-white/90 shadow-sm space-y-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[#132A86] block">
                 {lang === 'uz' ? 'Poster Mavzusini Tanlang' : 'Choose Poster Theme'}
               </span>
@@ -295,13 +295,13 @@ export const PosterCreator: React.FC<PosterCreatorProps> = ({ onShowToast }) => 
                       key={item.id}
                       type="button"
                       onClick={() => handleApplyPreset(item.id as PosterTheme)}
-                      className={`p-3 rounded-[18px] text-xs font-bold flex items-center gap-2 transition-all cursor-pointer border ${
+                      className={`p-2.5 sm:p-3 rounded-[16px] sm:rounded-[18px] text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer border touch-manipulation ${
                         isActive
                           ? 'bg-[#132A86] text-white border-[#132A86] shadow-sm'
                           : 'bg-white/80 text-[#0A143A] border-[#132A86]/10 hover:bg-white'
                       }`}
                     >
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-[#1FD0C2]' : 'text-[#132A86]'}`} />
+                      <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${isActive ? 'text-[#1FD0C2]' : 'text-[#132A86]'}`} />
                       <span className="truncate">{item.label}</span>
                     </button>
                   );
@@ -310,7 +310,7 @@ export const PosterCreator: React.FC<PosterCreatorProps> = ({ onShowToast }) => 
             </div>
 
             {/* Content Fields */}
-            <div className="liquid-glass rounded-[26px] p-5 sm:p-6 border border-white/90 shadow-sm space-y-4">
+            <div className="liquid-glass rounded-[24px] sm:rounded-[26px] p-4 sm:p-6 border border-white/90 shadow-sm space-y-3.5 sm:space-y-4">
               <span className="text-xs font-bold uppercase tracking-wider text-[#132A86] block">
                 {lang === 'uz' ? 'Poster Matnlari' : 'Poster Content & Details'}
               </span>
@@ -339,7 +339,7 @@ export const PosterCreator: React.FC<PosterCreatorProps> = ({ onShowToast }) => 
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-[11px] font-semibold text-[#4A577D] block mb-1">
                     {lang === 'uz' ? 'Vaqt / Sana' : 'Date / Detail'}
@@ -390,12 +390,12 @@ export const PosterCreator: React.FC<PosterCreatorProps> = ({ onShowToast }) => 
             </div>
 
             {/* Export Buttons */}
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
               <button
                 type="button"
                 disabled={exporting}
                 onClick={() => handleExportPoster('png')}
-                className="apple-glass-cta flex-1 py-3.5 rounded-[18px] text-xs font-extrabold flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                className="apple-glass-cta flex-1 py-3 sm:py-3.5 rounded-[16px] sm:rounded-[18px] text-xs font-extrabold flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px] touch-manipulation active:scale-[0.98]"
               >
                 <Download className="w-4 h-4 text-[#1FD0C2]" />
                 <span>{lang === 'uz' ? 'PNG Rasm Sifatida Yuklash' : 'Export HD PNG'}</span>
@@ -405,7 +405,7 @@ export const PosterCreator: React.FC<PosterCreatorProps> = ({ onShowToast }) => 
                 type="button"
                 disabled={exporting}
                 onClick={() => handleExportPoster('pdf')}
-                className="apple-glass-secondary flex-1 py-3.5 rounded-[18px] text-xs font-extrabold flex items-center justify-center gap-2 cursor-pointer text-[#132A86]"
+                className="apple-glass-secondary flex-1 py-3 sm:py-3.5 rounded-[16px] sm:rounded-[18px] text-xs font-extrabold flex items-center justify-center gap-2 cursor-pointer text-[#132A86] min-h-[44px] touch-manipulation active:scale-[0.98]"
               >
                 <Download className="w-4 h-4 text-[#132A86]" />
                 <span>{lang === 'uz' ? 'A4 PDF Chop Etish' : 'Printable A4 PDF'}</span>
@@ -414,11 +414,11 @@ export const PosterCreator: React.FC<PosterCreatorProps> = ({ onShowToast }) => 
 
           </div>
 
-          {/* Poster Live Preview (lg:col-span-6) */}
-          <div className="lg:col-span-6 flex justify-center">
+          {/* Poster Live Preview (Mobile: order-1 top, Desktop: order-2 right lg:col-span-6) */}
+          <div className="order-1 lg:order-2 lg:col-span-6 flex justify-center w-full">
             <div 
               ref={posterPreviewRef}
-              className="w-full max-w-[420px] aspect-[1/1.38] rounded-[32px] p-6 sm:p-8 flex flex-col items-center justify-between text-center relative overflow-hidden shadow-2xl border border-white/90"
+              className="w-full max-w-[340px] sm:max-w-[420px] aspect-[1/1.38] rounded-[26px] sm:rounded-[32px] p-4 sm:p-8 flex flex-col items-center justify-between text-center relative overflow-hidden shadow-2xl border border-white/90"
               style={{
                 background: theme === 'sale'
                   ? 'linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%)'
@@ -431,39 +431,39 @@ export const PosterCreator: React.FC<PosterCreatorProps> = ({ onShowToast }) => 
             >
               {/* Decorative accent top line */}
               <div 
-                className="w-20 h-1.5 rounded-full mb-2" 
+                className="w-16 sm:w-20 h-1.5 rounded-full mb-2" 
                 style={{ backgroundColor: accentColor }} 
               />
 
               {/* Poster Heading */}
               <div>
-                <h3 className="text-xl sm:text-2xl font-black text-[#0A143A] leading-tight tracking-tight mb-1.5">
+                <h3 className="text-lg sm:text-2xl font-black text-[#0A143A] leading-tight tracking-tight mb-1">
                   {headline}
                 </h3>
-                <p className="text-xs text-[#4A577D] font-medium leading-relaxed max-w-xs mx-auto">
+                <p className="text-[11px] sm:text-xs text-[#4A577D] font-medium leading-relaxed max-w-xs mx-auto line-clamp-2">
                   {subheadline}
                 </p>
               </div>
 
               {/* Event/Info Badge */}
-              <div className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-[16px] border border-black/5 shadow-xs text-xs font-bold flex items-center gap-2" style={{ color: accentColor }}>
-                <span>{dateInfo}</span>
+              <div className="bg-white/80 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-[14px] sm:rounded-[16px] border border-black/5 shadow-xs text-[11px] sm:text-xs font-bold flex items-center gap-1.5 sm:gap-2 truncate max-w-full" style={{ color: accentColor }}>
+                <span className="truncate">{dateInfo}</span>
                 <span>•</span>
-                <span>{locationInfo}</span>
+                <span className="truncate">{locationInfo}</span>
               </div>
 
               {/* QR Code Embedded Display Card */}
-              <div className="bg-white rounded-[26px] p-4.5 shadow-[0_12px_32px_rgba(19,42,134,0.08)] border border-black/5 flex flex-col items-center">
-                <div className="w-40 h-40 flex items-center justify-center">
-                  <QRRenderer value={qrUrl} config={posterQRConfig} sizePx={160} svgId="scanforge-poster-preview-svg" />
+              <div className="bg-white rounded-[20px] sm:rounded-[26px] p-3 sm:p-4.5 shadow-[0_12px_32px_rgba(19,42,134,0.08)] border border-black/5 flex flex-col items-center">
+                <div className="w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center">
+                  <QRRenderer value={qrUrl} config={posterQRConfig} sizePx={150} svgId="scanforge-poster-preview-svg" />
                 </div>
-                <span className="text-[11px] font-black uppercase tracking-wider mt-2.5" style={{ color: accentColor }}>
+                <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider mt-2 truncate max-w-[200px]" style={{ color: accentColor }}>
                   {ctaText}
                 </span>
               </div>
 
               {/* Poster Footer Brand */}
-              <div className="text-[10px] font-bold text-[#132A86]/70 uppercase tracking-widest pt-2">
+              <div className="text-[9px] sm:text-[10px] font-bold text-[#132A86]/70 uppercase tracking-widest pt-1.5 sm:pt-2">
                 SCANFORGE • FREE HD QR STUDIO
               </div>
             </div>

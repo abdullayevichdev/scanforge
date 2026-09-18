@@ -391,7 +391,7 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
   return (
     <div 
       ref={containerRef} 
-      className="relative flex flex-col items-center justify-center p-3 rounded-[32px] bg-white/90 shadow-2xl border border-white/90 select-none overflow-hidden max-w-full"
+      className="relative flex flex-col items-center justify-center p-2.5 sm:p-4 rounded-[24px] sm:rounded-[32px] bg-white/90 shadow-2xl border border-white/90 select-none overflow-hidden max-w-full w-full"
       id={`${instanceId}-card`}
     >
       <svg 
@@ -401,10 +401,10 @@ export const QRRenderer: React.FC<QRRendererProps> = ({
         viewBox={`0 0 ${totalSvgWidth} ${totalSvgHeight}`}
         width="100%"
         height="100%"
-        className="select-none max-w-full max-h-[460px]"
+        className="select-none max-w-full h-auto max-h-[360px] sm:max-h-[460px] object-contain"
         style={{
           background: backgroundFill,
-          borderRadius: '24px'
+          borderRadius: '20px'
         }}
       >
         <defs>

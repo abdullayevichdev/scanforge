@@ -265,12 +265,12 @@ export const WifiCardGenerator: React.FC<WifiCardGeneratorProps> = ({ onShowToas
           </p>
         </div>
 
-        {/* Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Layout: Mobile Preview first (order-1), Settings below (order-2) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           
-          {/* Settings Panel (5 cols) */}
-          <div className="lg:col-span-5 liquid-glass rounded-[28px] p-6 sm:p-7 border border-white/90 shadow-sm space-y-4">
-            <h3 className="text-base font-bold text-[#0A143A] flex items-center gap-2 pb-3 border-b border-[#132A86]/8">
+          {/* Settings Panel (Mobile: order-2, Desktop: order-1 lg:col-span-5) */}
+          <div className="order-2 lg:order-1 lg:col-span-5 liquid-glass rounded-[24px] sm:rounded-[28px] p-4 sm:p-7 border border-white/90 shadow-sm space-y-4">
+            <h3 className="text-sm sm:text-base font-bold text-[#0A143A] flex items-center gap-2 pb-3 border-b border-[#132A86]/8">
               <Wifi className="w-4 h-4 text-[#132A86]" />
               <span>{lang === 'uz' ? 'Tarmoq Sozlamalari' : 'Network Credentials'}</span>
             </h3>
@@ -280,7 +280,7 @@ export const WifiCardGenerator: React.FC<WifiCardGeneratorProps> = ({ onShowToas
               <label className="text-xs font-semibold text-[#0A143A] mb-2 block">
                 {lang === 'uz' ? 'Karta Uslubi' : 'Card Design Style'}
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                 {[
                   { id: 'liquid-blue', name: 'Liquid Blue' },
                   { id: 'minimal-cafe', name: 'Warm Cafe' },
@@ -290,9 +290,9 @@ export const WifiCardGenerator: React.FC<WifiCardGeneratorProps> = ({ onShowToas
                     key={st.id}
                     type="button"
                     onClick={() => setData({ ...data, style: st.id as any })}
-                    className={`py-2 px-2.5 rounded-[14px] text-center border text-xs font-semibold transition-all cursor-pointer ${
+                    className={`py-2 px-1.5 sm:px-2.5 rounded-[12px] sm:rounded-[14px] text-center border text-[11px] sm:text-xs font-semibold transition-all cursor-pointer ${
                       data.style === st.id
-                        ? 'bg-[#132A86] text-white border-[#132A86]'
+                        ? 'bg-[#132A86] text-white border-[#132A86] shadow-xs'
                         : 'bg-white/70 text-[#0A143A] border-[#132A86]/10 hover:bg-white'
                     }`}
                   >
@@ -358,7 +358,7 @@ export const WifiCardGenerator: React.FC<WifiCardGeneratorProps> = ({ onShowToas
             </div>
 
             {/* Security Type & Hidden Toggle */}
-            <div className="grid grid-cols-2 gap-3 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div>
                 <label className="text-xs font-medium text-[#4A577D] block mb-1">
                   {lang === 'uz' ? 'Shifrlash turi' : 'Security'}
@@ -375,7 +375,7 @@ export const WifiCardGenerator: React.FC<WifiCardGeneratorProps> = ({ onShowToas
               </div>
 
               <div className="flex flex-col justify-end">
-                <label className="flex items-center gap-2 p-2 rounded-[14px] bg-white border border-[#132A86]/10 cursor-pointer">
+                <label className="flex items-center gap-2 p-2 rounded-[14px] bg-white border border-[#132A86]/10 cursor-pointer min-h-[38px]">
                   <input
                     type="checkbox"
                     checked={data.hidden}
@@ -391,11 +391,11 @@ export const WifiCardGenerator: React.FC<WifiCardGeneratorProps> = ({ onShowToas
 
           </div>
 
-          {/* Preview & Print (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col items-center">
+          {/* Preview & Print (Mobile: order-1 top, Desktop: order-2 right lg:col-span-7) */}
+          <div className="order-1 lg:order-2 lg:col-span-7 flex flex-col items-center w-full">
             
-            <div className="w-full liquid-glass-elevated rounded-[32px] p-6 sm:p-8 border border-white/90 shadow-lg flex flex-col items-center">
-              <div className="w-full flex items-center justify-between mb-4 pb-3 border-b border-[#132A86]/8">
+            <div className="w-full liquid-glass-elevated rounded-[26px] sm:rounded-[32px] p-4 sm:p-8 border border-white/90 shadow-lg flex flex-col items-center">
+              <div className="w-full flex items-center justify-between mb-3.5 sm:mb-4 pb-2.5 sm:pb-3 border-b border-[#132A86]/8">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#132A86] flex items-center gap-1.5">
                   <Printer className="w-3.5 h-3.5 text-[#1FD0C2]" />
                   {lang === 'uz' ? 'Chop etish uchun tayyor ko\'rinish' : 'Printable Display Stand'}
@@ -406,33 +406,33 @@ export const WifiCardGenerator: React.FC<WifiCardGeneratorProps> = ({ onShowToas
               </div>
 
               {/* Canvas render */}
-              <div className="w-full max-w-[420px] rounded-[22px] overflow-hidden shadow-md border border-black/5 bg-slate-900/5">
+              <div className="w-full max-w-[360px] sm:max-w-[420px] rounded-[18px] sm:rounded-[22px] overflow-hidden shadow-md border border-black/5 bg-slate-900/5">
                 <canvas
                   ref={canvasRef}
-                  className="w-full h-auto rounded-[20px] object-contain"
+                  className="w-full h-auto rounded-[16px] sm:rounded-[20px] object-contain"
                 />
               </div>
 
               {/* Export actions */}
-              <div className="w-full mt-6 pt-5 border-t border-[#132A86]/8">
-                <div className="grid grid-cols-3 gap-3">
+              <div className="w-full mt-4 sm:mt-6 pt-4 sm:pt-5 border-t border-[#132A86]/8">
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-3">
                   <button
                     type="button"
                     disabled={isExporting}
                     onClick={() => handleExport('png')}
-                    className="apple-glass-secondary py-3 px-4 rounded-[16px] text-xs font-bold text-[#132A86] flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] transition-transform"
+                    className="apple-glass-secondary py-2.5 sm:py-3 px-2 sm:px-4 rounded-[14px] sm:rounded-[16px] text-[11px] sm:text-xs font-bold text-[#132A86] flex items-center justify-center gap-1 sm:gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform"
                   >
-                    <Download className="w-4 h-4" />
-                    <span>PNG (High)</span>
+                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span>PNG</span>
                   </button>
 
                   <button
                     type="button"
                     disabled={isExporting}
                     onClick={() => handleExport('jpg')}
-                    className="apple-glass-secondary py-3 px-4 rounded-[16px] text-xs font-bold text-[#132A86] flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] transition-transform"
+                    className="apple-glass-secondary py-2.5 sm:py-3 px-2 sm:px-4 rounded-[14px] sm:rounded-[16px] text-[11px] sm:text-xs font-bold text-[#132A86] flex items-center justify-center gap-1 sm:gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform"
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span>JPG</span>
                   </button>
 
@@ -440,10 +440,10 @@ export const WifiCardGenerator: React.FC<WifiCardGeneratorProps> = ({ onShowToas
                     type="button"
                     disabled={isExporting}
                     onClick={() => handleExport('pdf')}
-                    className="apple-glass-primary py-3 px-4 rounded-[16px] text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] transition-transform"
+                    className="apple-glass-primary py-2.5 sm:py-3 px-2 sm:px-4 rounded-[14px] sm:rounded-[16px] text-[11px] sm:text-xs font-bold text-white flex items-center justify-center gap-1 sm:gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform"
                   >
-                    <FileText className="w-4 h-4" />
-                    <span>PDF (A5 Print)</span>
+                    <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span>PDF</span>
                   </button>
                 </div>
               </div>

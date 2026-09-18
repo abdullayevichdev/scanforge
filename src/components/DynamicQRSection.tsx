@@ -228,15 +228,15 @@ export const DynamicQRSection: React.FC<DynamicQRSectionProps> = ({ onShowToast 
         </div>
 
         {/* Action Bar */}
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-bold text-[#0A143A]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <h3 className="text-base sm:text-lg font-bold text-[#0A143A]">
             {lang === 'uz' ? 'Sizning Dinamik QR Kodlaringiz' : 'Your Dynamic QR Codes'}
           </h3>
 
           <button
             type="button"
             onClick={() => setIsCreating(true)}
-            className="apple-glass-primary py-2.5 px-4 rounded-[16px] text-xs font-bold text-white flex items-center gap-2 cursor-pointer shadow-xs hover:scale-[1.02] transition-transform"
+            className="apple-glass-primary py-2.5 px-4 rounded-[16px] text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer shadow-xs hover:scale-[1.02] active:scale-[0.98] transition-transform w-full sm:w-auto touch-manipulation min-h-[42px]"
           >
             <Plus className="w-4 h-4" />
             <span>{lang === 'uz' ? 'Yangi Dinamik QR' : 'Create Dynamic QR'}</span>

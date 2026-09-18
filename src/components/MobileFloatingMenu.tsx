@@ -36,13 +36,13 @@ export const MobileFloatingMenu: React.FC<MobileFloatingMenuProps> = ({ onOpenSe
   };
 
   return (
-    <div className="lg:hidden fixed bottom-5 right-4 z-40 flex flex-col items-end gap-2 pointer-events-auto">
+    <div className="lg:hidden fixed bottom-4 sm:bottom-6 right-3 sm:right-4 z-40 flex flex-col items-end gap-2 pointer-events-auto pb-safe">
       {/* Floating Speed Dial Popup */}
       {isOpen && (
         <div 
-          className="liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[24px] p-3 shadow-[0_16px_40px_rgba(19,42,134,0.18)] border border-white/90 mb-2 w-52 animate-fadeIn space-y-1"
+          className="liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[24px] p-3 shadow-[0_16px_40px_rgba(19,42,134,0.18)] border border-white/90 mb-2 w-52 max-h-[75vh] overflow-y-auto scrollbar-none animate-fadeIn space-y-1"
         >
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#132A86] px-2.5 py-1 mb-1 border-b border-[#132A86]/10 flex items-center justify-between">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#132A86] px-2.5 py-1 mb-1 border-b border-[#132A86]/10 flex items-center justify-between sticky top-0 bg-white/95 backdrop-blur-md z-10">
             <span>{lang === 'uz' ? 'Tezkor Menyu' : 'Quick Menu'}</span>
             <Sparkles className="w-3 h-3 text-[#1FD0C2]" />
           </div>

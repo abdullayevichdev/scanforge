@@ -309,12 +309,12 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
           </p>
         </div>
 
-        {/* Studio Grid: Controls on Left, Live Canvas Preview on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Studio Grid: Live Preview First on Mobile, Controls Second */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           
           {/* Controls (5 cols) */}
-          <div className="lg:col-span-5 liquid-glass rounded-[28px] p-6 sm:p-7 border border-white/90 shadow-sm space-y-4">
-            <h3 className="text-base font-bold text-[#0A143A] flex items-center gap-2 pb-3 border-b border-[#132A86]/8">
+          <div className="order-2 lg:order-1 lg:col-span-5 liquid-glass rounded-[24px] sm:rounded-[28px] p-4 sm:p-7 border border-white/90 shadow-sm space-y-4">
+            <h3 className="text-sm sm:text-base font-bold text-[#0A143A] flex items-center gap-2 pb-3 border-b border-[#132A86]/8">
               <User className="w-4 h-4 text-[#132A86]" />
               <span>{lang === 'uz' ? 'Vizitka Ma\'lumotlari' : 'Contact Information'}</span>
             </h3>
@@ -335,7 +335,7 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                     key={tpl.id}
                     type="button"
                     onClick={() => setData({ ...data, template: tpl.id as any })}
-                    className={`p-2.5 rounded-[16px] text-left border transition-all cursor-pointer ${
+                    className={`p-2.5 rounded-[16px] text-left border transition-all cursor-pointer touch-manipulation ${
                       data.template === tpl.id
                         ? 'bg-[#132A86] text-white border-[#132A86] shadow-sm'
                         : 'bg-white/70 text-[#0A143A] border-[#132A86]/10 hover:bg-white'
@@ -362,13 +362,13 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                     type="text"
                     value={data.name}
                     onChange={(e) => setData({ ...data, name: e.target.value })}
-                    className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                    className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none font-medium"
                     placeholder="Abdulhay Avazxanov"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-medium text-[#4A577D] block mb-1">
                     {lang === 'uz' ? 'Lavozim' : 'Job Title'}
@@ -379,7 +379,7 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                       type="text"
                       value={data.jobTitle}
                       onChange={(e) => setData({ ...data, jobTitle: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none font-medium"
                       placeholder="Software Architect"
                     />
                   </div>
@@ -395,14 +395,14 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                       type="text"
                       value={data.company}
                       onChange={(e) => setData({ ...data, company: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none font-medium"
                       placeholder="ScanForge"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-medium text-[#4A577D] block mb-1">
                     {lang === 'uz' ? 'Telefon raqami' : 'Phone'}
@@ -413,7 +413,7 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                       type="text"
                       value={data.phone}
                       onChange={(e) => setData({ ...data, phone: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none font-medium"
                       placeholder="+998 93 322 35 80"
                     />
                   </div>
@@ -429,7 +429,7 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                       type="email"
                       value={data.email}
                       onChange={(e) => setData({ ...data, email: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none font-medium"
                       placeholder="contact@domain.uz"
                     />
                   </div>
@@ -446,13 +446,13 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                     type="text"
                     value={data.website}
                     onChange={(e) => setData({ ...data, website: e.target.value })}
-                    className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                    className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none font-medium"
                     placeholder="https://scanforge.uz"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-medium text-[#4A577D] block mb-1">Telegram</label>
                   <div className="relative">
@@ -461,7 +461,7 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                       type="text"
                       value={data.telegram}
                       onChange={(e) => setData({ ...data, telegram: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none font-medium"
                       placeholder="username"
                     />
                   </div>
@@ -474,7 +474,7 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                       type="text"
                       value={data.instagram}
                       onChange={(e) => setData({ ...data, instagram: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none font-medium"
                       placeholder="username"
                     />
                   </div>
@@ -484,43 +484,43 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
 
           </div>
 
-          {/* Live Card Preview & Export Actions (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col items-center">
+          {/* Live Card Preview & Export Actions (7 cols, order-1 on mobile) */}
+          <div className="order-1 lg:order-2 lg:col-span-7 flex flex-col items-center w-full">
             
             {/* Visual Canvas Display Frame */}
-            <div className="w-full liquid-glass-elevated rounded-[32px] p-6 sm:p-8 border border-white/90 shadow-lg flex flex-col items-center">
-              <div className="w-full flex items-center justify-between mb-4 pb-3 border-b border-[#132A86]/8">
+            <div className="w-full liquid-glass-elevated rounded-[24px] sm:rounded-[32px] p-4 sm:p-8 border border-white/90 shadow-lg flex flex-col items-center">
+              <div className="w-full flex items-center justify-between mb-3 sm:mb-4 pb-2.5 sm:pb-3 border-b border-[#132A86]/8">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#132A86] flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#1FD0C2]" />
-                  {lang === 'uz' ? 'Jonli Vizitka Ko\'rinishi (300 DPI)' : 'Live High-Res Preview (300 DPI)'}
+                  {lang === 'uz' ? 'Jonli Vizitka (300 DPI)' : 'Live Preview (300 DPI)'}
                 </span>
-                <span className="text-[11px] font-mono text-[#4A577D]">
-                  {lang === 'uz' ? '85mm × 55mm (Standart)' : '85mm × 55mm (Standard)'}
+                <span className="text-[10px] sm:text-[11px] font-mono text-[#4A577D]">
+                  85mm × 55mm
                 </span>
               </div>
 
               {/* Canvas rendered element */}
-              <div className="w-full overflow-hidden rounded-[20px] shadow-md border border-black/5 flex justify-center bg-slate-900/5">
+              <div className="w-full overflow-hidden rounded-[16px] sm:rounded-[20px] shadow-md border border-black/5 flex justify-center bg-slate-900/5 p-1">
                 <canvas
                   ref={canvasRef}
-                  className="w-full h-auto max-w-[620px] rounded-[18px] object-contain"
+                  className="w-full h-auto max-w-[620px] rounded-[14px] sm:rounded-[18px] object-contain"
                 />
               </div>
 
               {/* Export Buttons */}
-              <div className="w-full mt-6 pt-5 border-t border-[#132A86]/8">
-                <p className="text-xs font-semibold text-[#0A143A] mb-3 text-center">
+              <div className="w-full mt-4 sm:mt-6 pt-4 sm:pt-5 border-t border-[#132A86]/8">
+                <p className="text-xs font-semibold text-[#0A143A] mb-2.5 sm:mb-3 text-center">
                   {lang === 'uz' ? 'Chop etish yoki raqamli ulashish uchun yuklab oling:' : 'Export for printing or digital sharing:'}
                 </p>
 
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                   <button
                     type="button"
                     disabled={isExporting}
                     onClick={() => handleExport('png')}
-                    className="apple-glass-secondary py-3 px-4 rounded-[16px] text-xs font-bold text-[#132A86] flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] transition-transform"
+                    className="apple-glass-secondary py-2.5 sm:py-3 px-3 sm:px-4 rounded-[14px] sm:rounded-[16px] text-xs font-bold text-[#132A86] flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform touch-manipulation min-h-[42px]"
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className="w-4 h-4 shrink-0" />
                     <span>PNG (4K)</span>
                   </button>
 
@@ -528,9 +528,9 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                     type="button"
                     disabled={isExporting}
                     onClick={() => handleExport('jpg')}
-                    className="apple-glass-secondary py-3 px-4 rounded-[16px] text-xs font-bold text-[#132A86] flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] transition-transform"
+                    className="apple-glass-secondary py-2.5 sm:py-3 px-3 sm:px-4 rounded-[14px] sm:rounded-[16px] text-xs font-bold text-[#132A86] flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform touch-manipulation min-h-[42px]"
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className="w-4 h-4 shrink-0" />
                     <span>JPG (Clean)</span>
                   </button>
 
@@ -538,10 +538,10 @@ export const BusinessCardGenerator: React.FC<BusinessCardGeneratorProps> = ({ on
                     type="button"
                     disabled={isExporting}
                     onClick={() => handleExport('pdf')}
-                    className="apple-glass-primary py-3 px-4 rounded-[16px] text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] transition-transform"
+                    className="apple-glass-primary py-2.5 sm:py-3 px-3 sm:px-4 rounded-[14px] sm:rounded-[16px] text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform touch-manipulation min-h-[42px]"
                   >
-                    <FileText className="w-4 h-4" />
-                    <span>PDF (Print 85×55)</span>
+                    <FileText className="w-4 h-4 shrink-0" />
+                    <span>PDF (85×55mm)</span>
                   </button>
                 </div>
               </div>

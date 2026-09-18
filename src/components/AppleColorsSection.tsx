@@ -65,16 +65,16 @@ export const AppleColorsSection: React.FC<AppleColorsSectionProps> = ({ config, 
         </div>
 
         {/* Target Slot Selector */}
-        <div className="flex items-center gap-1 bg-white/80 p-1 rounded-[14px] border border-[#132A86]/10 text-[11px] overflow-x-auto">
+        <div className="flex items-center gap-1 bg-white/80 p-1 rounded-[14px] border border-[#132A86]/10 text-[11px] overflow-x-auto scrollbar-none touch-pan-x max-w-full">
           {(['fg', 'grad1', 'grad2', 'bg', 'eyeOuter'] as const).map((slot) => (
             <button
               key={slot}
               type="button"
               onClick={() => setTargetSlot(slot)}
-              className={`px-2.5 py-1 rounded-[10px] font-semibold whitespace-nowrap transition-all cursor-pointer ${
+              className={`px-2.5 py-1.5 rounded-[10px] font-semibold whitespace-nowrap transition-all cursor-pointer touch-manipulation shrink-0 ${
                 targetSlot === slot
                   ? 'bg-[#132A86] text-white shadow-sm'
-                  : 'text-[#4A577D] hover:text-[#0A143A] hover:bg-white/60'
+                  : 'text-[#4A577D] hover:text-[#0A143A] hover:bg-white/60 active:bg-white'
               }`}
             >
               {slotLabels[slot]}

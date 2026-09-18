@@ -116,7 +116,7 @@ export const UserSettingsModal: React.FC<UserSettingsModalProps> = ({
     }
 
     const fullPhone = formattedPhoneDisplay(phoneRaw);
-    login(firstName, lastName, fullPhone, email);
+    login(firstName, lastName, fullPhone);
     setLoginError(null);
     onShowToast?.(
       lang === 'uz' ? 'Xush kelibsiz!' : 'Welcome!',
@@ -202,7 +202,7 @@ export const UserSettingsModal: React.FC<UserSettingsModalProps> = ({
           <button
             type="button"
             onClick={() => setActiveTab('profile')}
-            className={`py-2 px-1 rounded-[12px] text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            className={`py-2 px-1 rounded-[12px] text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 touch-manipulation ${
               activeTab === 'profile'
                 ? 'bg-white text-[#132A86] shadow-xs'
                 : 'text-[#4A577D] hover:text-[#0A143A]'
@@ -215,33 +215,33 @@ export const UserSettingsModal: React.FC<UserSettingsModalProps> = ({
           <button
             type="button"
             onClick={() => setActiveTab('language')}
-            className={`py-2 px-1 rounded-[12px] text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            className={`py-2 px-1 rounded-[12px] text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 touch-manipulation ${
               activeTab === 'language'
                 ? 'bg-white text-[#132A86] shadow-xs'
                 : 'text-[#4A577D] hover:text-[#0A143A]'
             }`}
           >
             <Globe className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">{lang === 'uz' ? 'Til' : 'Language'}</span>
+            <span className="truncate">{lang === 'uz' ? 'Til' : 'Lang'}</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('preferences')}
-            className={`py-2 px-1 rounded-[12px] text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            className={`py-2 px-1 rounded-[12px] text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 touch-manipulation ${
               activeTab === 'preferences'
                 ? 'bg-white text-[#132A86] shadow-xs'
                 : 'text-[#4A577D] hover:text-[#0A143A]'
             }`}
           >
             <Sliders className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">{lang === 'uz' ? 'QR Parametrlari' : 'Preferences'}</span>
+            <span className="truncate">{lang === 'uz' ? 'Parametr' : 'Prefs'}</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('danger')}
-            className={`py-2 px-1 rounded-[12px] text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            className={`py-2 px-1 rounded-[12px] text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 touch-manipulation ${
               activeTab === 'danger'
                 ? 'bg-red-50 text-red-600 shadow-xs border border-red-200'
                 : 'text-red-500 hover:text-red-700'

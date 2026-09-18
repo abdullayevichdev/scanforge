@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Registered user profile with presence tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "firstName": { "type": "string", "maxLength": 100 },
+        "lastName": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "isOnline": { "type": "boolean" },
+        "currentSessionId": { "type": "string", "maxLength": 128 },
+        "loginAt": { "type": "string", "maxLength": 50 },
+        "lastSeenAt": { "type": "string", "maxLength": 50 },
+        "logoutAt": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 },
+        "sessionCount": { "type": "number" }
+      },
+      "required": ["id", "firstName", "lastName", "phone", "isOnline", "createdAt", "updatedAt"]
+    },
+    "Session": {
+      "title": "Session",
+      "description": "User visit and active session record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "firstName": { "type": "string", "maxLength": 100 },
+        "lastName": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "loginAt": { "type": "string", "maxLength": 50 },
+        "lastSeenAt": { "type": "string", "maxLength": 50 },
+        "logoutAt": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["online", "offline", "force_signed_out"], "maxLength": 30 },
+        "device": { "type": "string", "maxLength": 100 },
+        "userAgent": { "type": "string", "maxLength": 300 }
+      },
+      "required": ["id", "userId", "firstName", "lastName", "phone", "loginAt", "lastSeenAt", "status"]
+    },
+    "AdminAction": {
+      "title": "AdminAction",
+      "description": "Audit log entry for administrator operations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "action": { "type": "string", "maxLength": 200 },
+        "actionType": { "type": "string", "maxLength": 50 },
+        "targetUserId": { "type": "string", "maxLength": 128 },
+        "targetUserName": { "type": "string", "maxLength": 200 },
+        "details": { "type": "string", "maxLength": 500 },
+        "timestamp": { "type": "string", "maxLength": 50 },
+        "adminRole": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "action", "actionType", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Stores registered user profiles and current presence status"
+    },
+    "/sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/Session" },
+      "description": "Stores user visit logs, login/logout events and presence heartbeat"
+    },
+    "/adminActions/{actionId}": {
+      "schema": { "$ref": "#/entities/AdminAction" },
+      "description": "Stores administrator audit logs"
+    }
+  }
+}

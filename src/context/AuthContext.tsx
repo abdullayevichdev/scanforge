@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { UserProfile, UserSettings, SavedQRCodeRecord } from '../types';
 import { 
   getDailyUsage, 
@@ -7,9 +7,17 @@ import {
   canCreateQR as checkCanCreate, 
   recordQRCreation as doRecordCreation 
 } from '../utils/dailyLimitUtils';
+import { 
+  recordUserEntry, 
+  sendHeartbeat, 
+  recordUserLogout, 
+  subscribeToCurrentSession,
+  normalizePhoneNumber,
+  DBUser
+} from '../firebase/dbService';
 
 const DEFAULT_SETTINGS: UserSettings = {
-  language: 'en',
+  language: 'uz',
   defaultExportFormat: 'png',
   defaultErrorCorrection: 'H',
   defaultSize: 1024,
@@ -22,11 +30,15 @@ const DEFAULT_SETTINGS: UserSettings = {
 interface AuthContextType {
   user: UserProfile | null;
   settings: UserSettings;
-  login: (firstName: string, lastName: string, phone: string, email?: string) => void;
-  logout: () => void;
+  currentSessionId: string | null;
+  isGateOpen: boolean;
+  isLoggingIn: boolean;
+  loginError: string | null;
+  login: (firstName: string, lastName: string, phone: string) => Promise<boolean>;
+  logout: () => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => void;
   updateSettings: (updates: Partial<UserSettings>) => void;
-  deleteAccount: () => void;
+  deleteAccount: () => Promise<void>;
   dailyUsageCount: number;
   remainingCount: number;
   dailyLimit: number;
@@ -37,26 +49,63 @@ interface AuthContextType {
   saveQRRecord: (record: Omit<SavedQRCodeRecord, 'id' | 'createdAt' | 'updatedAt'>) => SavedQRCodeRecord;
   deleteQRRecord: (id: string) => void;
   toggleFavoriteQR: (id: string) => void;
+  
+  // Admin Context
+  isAdminLoggedIn: boolean;
+  adminToken: string | null;
+  verifyAdminPin: (pin: string) => Promise<{ success: boolean; error?: string }>;
+  logoutAdmin: () => void;
+
+  // Notification / Alert message from force sign out
+  systemNotice: string | null;
+  clearSystemNotice: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const USER_STORAGE_KEY = 'scanforge_user_profile_v1';
+const USER_STORAGE_KEY = 'scanforge_user_profile_v2';
+const SESSION_STORAGE_KEY = 'scanforge_user_session_id_v2';
 const SETTINGS_STORAGE_KEY = 'scanforge_user_settings_v1';
 const SAVED_QRS_STORAGE_KEY = 'scanforge_saved_qrs_v1';
+const ADMIN_TOKEN_KEY = 'scanforge_admin_auth_jwt_v2';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserProfile | null>(() => {
     try {
       const stored = localStorage.getItem(USER_STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (parsed && parsed.firstName && parsed.phone) {
+          return parsed;
+        }
       }
     } catch {
       // ignore
     }
     return null;
   });
+
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem(SESSION_STORAGE_KEY) || null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [systemNotice, setSystemNotice] = useState<string | null>(null);
+
+  // Admin state
+  const [adminToken, setAdminToken] = useState<string | null>(() => {
+    try {
+      return sessionStorage.getItem(ADMIN_TOKEN_KEY) || null;
+    } catch {
+      return null;
+    }
+  });
+  const isAdminLoggedIn = !!adminToken;
 
   const [settings, setSettings] = useState<UserSettings>(() => {
     try {
@@ -85,6 +134,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [dailyUsageCount, setDailyUsageCount] = useState<number>(() => getDailyUsage().count);
   const [remainingCount, setRemainingCount] = useState<number>(() => getRemainingCount());
 
+  // Gate is open (mandatory) if user is not fully authenticated or session is missing
+  const isGateOpen = !user || !user.firstName || !user.phone || !currentSessionId;
+
+  const clearSystemNotice = () => setSystemNotice(null);
+
   const refreshDailyUsage = () => {
     const usage = getDailyUsage();
     setDailyUsageCount(usage.count);
@@ -107,20 +161,123 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => clearInterval(interval);
   }, []);
 
-  const login = (firstName: string, lastName: string, phone: string, email?: string) => {
-    const profile: UserProfile = {
-      id: 'usr_' + Date.now(),
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      phone: phone.trim(),
-      email: email?.trim(),
-      tier: 'free',
-      createdAt: Date.now(),
-      settings,
+  // Heartbeat Timer: Sends heartbeat every 15 seconds while user is online
+  useEffect(() => {
+    if (!user?.id || !currentSessionId) return;
+
+    // Send initial ping
+    sendHeartbeat(user.id, currentSessionId);
+
+    const interval = setInterval(() => {
+      sendHeartbeat(user.id, currentSessionId);
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, [user?.id, currentSessionId]);
+
+  // Window unload / visibility handler to manage presence
+  useEffect(() => {
+    if (!user?.id || !currentSessionId) return;
+
+    const handleBeforeUnload = () => {
+      // Best effort mark offline on tab close
+      recordUserLogout(user.id, currentSessionId);
     };
-    setUser(profile);
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [user?.id, currentSessionId]);
+
+  // Real-time listener for current session to detect force sign out by admin
+  useEffect(() => {
+    if (!currentSessionId || !user?.id) return;
+
+    const unsubscribe = subscribeToCurrentSession(currentSessionId, (session) => {
+      if (session && session.status === 'force_signed_out') {
+        // Admin forced sign out
+        setUser(null);
+        setCurrentSessionId(null);
+        try {
+          localStorage.removeItem(USER_STORAGE_KEY);
+          localStorage.removeItem(SESSION_STORAGE_KEY);
+        } catch {
+          // ignore
+        }
+        setSystemNotice("Siz administrator tomonidan saytdan chiqarildingiz. Davom etish uchun ma'lumotlaringizni qayta kiriting.");
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [currentSessionId, user?.id]);
+
+  /**
+   * User login / first entry registration
+   */
+  const login = async (firstName: string, lastName: string, phone: string): Promise<boolean> => {
+    setIsLoggingIn(true);
+    setLoginError(null);
     try {
-      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(profile));
+      const trimmedFirst = firstName.trim();
+      const trimmedLast = lastName.trim();
+      const normalizedPhone = normalizePhoneNumber(phone);
+
+      const { user: dbUser, session: dbSession } = await recordUserEntry({
+        firstName: trimmedFirst,
+        lastName: trimmedLast,
+        phone: normalizedPhone,
+      });
+
+      const profile: UserProfile = {
+        id: dbUser.id,
+        firstName: dbUser.firstName,
+        lastName: dbUser.lastName,
+        phone: dbUser.phone,
+        tier: 'free',
+        createdAt: new Date(dbUser.createdAt).getTime(),
+        isOnline: true,
+        currentSessionId: dbSession.id,
+        loginAt: dbSession.loginAt,
+        lastSeenAt: dbSession.lastSeenAt,
+        sessionCount: dbUser.sessionCount,
+        settings,
+      };
+
+      setUser(profile);
+      setCurrentSessionId(dbSession.id);
+
+      try {
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(profile));
+        localStorage.setItem(SESSION_STORAGE_KEY, dbSession.id);
+      } catch {
+        // ignore
+      }
+
+      setIsLoggingIn(false);
+      return true;
+    } catch (err: any) {
+      console.error('Error logging in:', err);
+      setLoginError(err?.message || "Tizimga kirishda xatolik yuz berdi. Qaytadan urinib ko'ring.");
+      setIsLoggingIn(false);
+      return false;
+    }
+  };
+
+  /**
+   * User voluntary logout
+   */
+  const logout = async (): Promise<void> => {
+    if (user?.id && currentSessionId) {
+      await recordUserLogout(user.id, currentSessionId);
+    }
+    setUser(null);
+    setCurrentSessionId(null);
+    try {
+      localStorage.removeItem(USER_STORAGE_KEY);
+      localStorage.removeItem(SESSION_STORAGE_KEY);
     } catch {
       // ignore
     }
@@ -150,21 +307,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    try {
-      localStorage.removeItem(USER_STORAGE_KEY);
-    } catch {
-      // ignore
+  const deleteAccount = async () => {
+    if (user?.id && currentSessionId) {
+      await recordUserLogout(user.id, currentSessionId);
     }
-  };
-
-  const deleteAccount = () => {
     setUser(null);
+    setCurrentSessionId(null);
     setSettings(DEFAULT_SETTINGS);
     setSavedQRs([]);
     try {
       localStorage.removeItem(USER_STORAGE_KEY);
+      localStorage.removeItem(SESSION_STORAGE_KEY);
       localStorage.removeItem(SETTINGS_STORAGE_KEY);
       localStorage.removeItem(SAVED_QRS_STORAGE_KEY);
       localStorage.removeItem('scanforge_active_draft_v1');
@@ -178,7 +331,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const now = Date.now();
     const newRecord: SavedQRCodeRecord = {
       ...record,
-      id: 'qr_' + now + '_' + Math.random().toString(36).substr(2, 5),
+      id: 'qr_' + now + '_' + Math.random().toString(36).substring(2, 5),
       createdAt: now,
       updatedAt: now,
     };
@@ -217,11 +370,53 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  /**
+   * Admin PIN verification via backend Express API (/api/admin/verify-pin)
+   */
+  const verifyAdminPin = async (pin: string): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const response = await fetch('/api/admin/verify-pin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin }),
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        return { success: false, error: data.error || 'Incorrect admin code.' };
+      }
+
+      setAdminToken(data.token);
+      try {
+        sessionStorage.setItem(ADMIN_TOKEN_KEY, data.token);
+      } catch {
+        // ignore
+      }
+      return { success: true };
+    } catch (err: any) {
+      console.error('Error verifying admin pin:', err);
+      return { success: false, error: 'Server connection error. Please try again.' };
+    }
+  };
+
+  const logoutAdmin = () => {
+    setAdminToken(null);
+    try {
+      sessionStorage.removeItem(ADMIN_TOKEN_KEY);
+    } catch {
+      // ignore
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
         settings,
+        currentSessionId,
+        isGateOpen,
+        isLoggingIn,
+        loginError,
         login,
         logout,
         updateProfile,
@@ -237,6 +432,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         saveQRRecord,
         deleteQRRecord,
         toggleFavoriteQR,
+        
+        isAdminLoggedIn,
+        adminToken,
+        verifyAdminPin,
+        logoutAdmin,
+
+        systemNotice,
+        clearSystemNotice,
       }}
     >
       {children}

@@ -196,7 +196,7 @@ export const SocialQRPack: React.FC<SocialQRPackProps> = ({ onShowToast }) => {
             return (
               <div
                 key={channel.id}
-                className={`liquid-glass rounded-[28px] p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between shadow-sm hover:shadow-lg ${
+                className={`liquid-glass rounded-[24px] sm:rounded-[28px] p-4 sm:p-7 border transition-all duration-300 flex flex-col justify-between shadow-sm hover:shadow-lg ${
                   isSelected
                     ? 'border-[#132A86]/30 bg-white'
                     : 'border-white/80 hover:border-[#132A86]/20 bg-white/80'
@@ -205,19 +205,19 @@ export const SocialQRPack: React.FC<SocialQRPackProps> = ({ onShowToast }) => {
                 <div>
                   {/* Card top badge */}
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2 sm:gap-2.5">
                       <div 
-                        className="w-9 h-9 rounded-[14px] flex items-center justify-center text-white shadow-xs"
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-[12px] sm:rounded-[14px] flex items-center justify-center text-white shadow-xs"
                         style={{ backgroundColor: channel.brandColor }}
                       >
-                        <Icon className="w-5 h-5" />
+                        <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
-                      <span className="text-base font-bold text-[#0A143A]">
+                      <span className="text-sm sm:text-base font-bold text-[#0A143A]">
                         {channel.name}
                       </span>
                     </div>
                     <span 
-                      className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white"
+                      className="px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold text-white"
                       style={{ backgroundColor: channel.brandColor }}
                     >
                       Official Pack
@@ -225,7 +225,7 @@ export const SocialQRPack: React.FC<SocialQRPackProps> = ({ onShowToast }) => {
                   </div>
 
                   {/* Input handle */}
-                  <div className="mb-6">
+                  <div className="mb-5 sm:mb-6">
                     <label className="text-xs font-semibold text-[#4A577D] block mb-1.5">
                       {lang === 'uz' ? 'Foydalanuvchi nomi yoki havola:' : 'Username or link:'} <span className="text-[#94A3B8] font-normal font-mono">({channel.prefix})</span>
                     </label>
@@ -241,7 +241,7 @@ export const SocialQRPack: React.FC<SocialQRPackProps> = ({ onShowToast }) => {
                           setSelectedChannel(channel.id);
                         }}
                         placeholder={channel.placeholder}
-                        className="w-full pl-8 pr-3 py-2.5 text-xs sm:text-sm rounded-[14px] bg-slate-50/80 border border-[#132A86]/15 focus:border-[#132A86] focus:bg-white focus:outline-none font-medium transition-all"
+                        className="w-full pl-8 pr-3 py-2 sm:py-2.5 text-xs sm:text-sm rounded-[14px] bg-slate-50/80 border border-[#132A86]/15 focus:border-[#132A86] focus:bg-white focus:outline-none font-medium transition-all"
                       />
                     </div>
                   </div>
@@ -252,11 +252,11 @@ export const SocialQRPack: React.FC<SocialQRPackProps> = ({ onShowToast }) => {
                   type="button"
                   disabled={downloadingId === channel.id}
                   onClick={() => handleDownload(channel)}
-                  className="w-full py-3 px-4 rounded-[16px] text-xs sm:text-sm font-bold text-white flex items-center justify-center gap-2 cursor-pointer hover:opacity-95 transition-all shadow-md active:scale-[0.99]"
+                  className="w-full py-2.5 sm:py-3 px-3 sm:px-4 rounded-[14px] sm:rounded-[16px] text-xs sm:text-sm font-bold text-white flex items-center justify-center gap-2 cursor-pointer hover:opacity-95 transition-all shadow-md active:scale-[0.99] touch-manipulation min-h-[44px]"
                   style={{ backgroundColor: channel.brandColor }}
                 >
-                  <Download className="w-4 h-4" />
-                  <span>{downloadingId === channel.id ? (lang === 'uz' ? 'Yuklanmoqda...' : 'Exporting...') : lang === 'uz' ? `${channel.name} QR Kartani Yuklab Olish` : `Download ${channel.name} QR Card`}</span>
+                  <Download className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{downloadingId === channel.id ? (lang === 'uz' ? 'Yuklanmoqda...' : 'Exporting...') : lang === 'uz' ? `${channel.name} QR Kartani Yuklash` : `Download ${channel.name} QR`}</span>
                 </button>
               </div>
             );

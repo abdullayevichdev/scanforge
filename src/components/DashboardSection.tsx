@@ -82,26 +82,26 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Dashboard Glass Container */}
-        <div className="liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 border border-white/90 shadow-xl space-y-8">
+        <div className="liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[26px] sm:rounded-[36px] p-4 sm:p-8 border border-white/90 shadow-xl space-y-6 sm:space-y-8">
           
           {/* Top Welcome & Quick Stats Bar */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-[#132A86]/10">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-[22px] bg-gradient-to-tr from-[#132A86] to-[#1FD0C2] text-white flex items-center justify-center text-xl font-black shadow-lg shrink-0">
-                {user ? `${user.firstName[0]?.toUpperCase()}${user.lastName[0]?.toUpperCase()}` : <Sparkles className="w-7 h-7" />}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6 pb-5 sm:pb-6 border-b border-[#132A86]/10">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-[18px] sm:rounded-[22px] bg-gradient-to-tr from-[#132A86] to-[#1FD0C2] text-white flex items-center justify-center text-lg sm:text-xl font-black shadow-lg shrink-0">
+                {user ? `${user.firstName[0]?.toUpperCase()}${user.lastName[0]?.toUpperCase()}` : <Sparkles className="w-6 h-6 sm:w-7 sm:h-7" />}
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl sm:text-2xl font-extrabold text-[#0A143A]">
+                  <h2 className="text-lg sm:text-2xl font-extrabold text-[#0A143A]">
                     {user 
                       ? (lang === 'uz' ? `Xush kelibsiz, ${user.firstName}!` : `Welcome back, ${user.firstName}!`)
                       : (lang === 'uz' ? 'Boshqaruv Paneli' : 'ScanForge Studio Dashboard')}
                   </h2>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#1FD0C2]/20 text-[#132A86]">
+                  <span className="px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-[#1FD0C2]/20 text-[#132A86]">
                     Free Plan
                   </span>
                 </div>
-                <p className="text-xs text-[#4A577D] mt-0.5">
+                <p className="text-xs text-[#4A577D] mt-0.5 line-clamp-1 sm:line-clamp-none">
                   {lang === 'uz'
                     ? 'QR kodlaringizni boshqaring, yangi dizaynlar yarating va eksport qiling.'
                     : 'Manage your QR codes, launch new designs, and export in ultra high-resolution.'}
@@ -110,7 +110,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             </div>
 
             {/* Daily Usage Progress Badge */}
-            <div className="bg-[#EEF6FF]/90 rounded-[22px] p-3.5 sm:px-5 sm:py-3 border border-[#132A86]/10 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+            <div className="bg-[#EEF6FF]/90 rounded-[20px] sm:rounded-[22px] p-3 sm:px-5 sm:py-3 border border-[#132A86]/10 flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-5">
               <div>
                 <div className="flex items-center justify-between gap-3 text-xs font-bold text-[#132A86] mb-1">
                   <span className="flex items-center gap-1.5">
@@ -119,7 +119,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                   </span>
                   <span>{dailyUsageCount} / {dailyLimit}</span>
                 </div>
-                <div className="w-40 sm:w-48 h-2 bg-white rounded-full overflow-hidden border border-[#132A86]/10">
+                <div className="w-full sm:w-48 h-2 bg-white rounded-full overflow-hidden border border-[#132A86]/10">
                   <div 
                     className="h-full bg-gradient-to-r from-[#132A86] to-[#1FD0C2] rounded-full transition-all duration-300"
                     style={{ width: `${(dailyUsageCount / dailyLimit) * 100}%` }}
@@ -133,21 +133,21 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
           </div>
 
           {/* Quick Action Tiles */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
             <button
               type="button"
               onClick={onNewQR}
-              className="p-4 rounded-[22px] bg-[#132A86] text-white hover:bg-[#0E216B] transition-all cursor-pointer shadow-md flex flex-col justify-between text-left group"
+              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-[#132A86] text-white hover:bg-[#0E216B] transition-all cursor-pointer shadow-md flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
             >
-              <div className="w-10 h-10 rounded-[14px] bg-white/15 flex items-center justify-center text-[#1FD0C2] mb-3 group-hover:scale-105 transition-transform">
-                <Plus className="w-5 h-5" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-white/15 flex items-center justify-center text-[#1FD0C2] mb-2 sm:mb-3 group-hover:scale-105 transition-transform">
+                <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
                 <span className="text-xs sm:text-sm font-extrabold block">
-                  {lang === 'uz' ? 'Yangi QR Yaratish' : 'Create New QR'}
+                  {lang === 'uz' ? 'Yangi QR' : 'Create New QR'}
                 </span>
-                <span className="text-[11px] text-white/70">
-                  {lang === 'uz' ? '12 xil formatda' : '12 customizable formats'}
+                <span className="text-[10px] sm:text-[11px] text-white/70 truncate block">
+                  {lang === 'uz' ? '12 xil formatda' : '12 formats'}
                 </span>
               </div>
             </button>
@@ -155,17 +155,17 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             <button
               type="button"
               onClick={onScanQR}
-              className="p-4 rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-all cursor-pointer shadow-xs flex flex-col justify-between text-left group"
+              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-all cursor-pointer shadow-xs flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
             >
-              <div className="w-10 h-10 rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-3 group-hover:scale-105 transition-transform">
-                <Scan className="w-5 h-5" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-2 sm:mb-3 group-hover:scale-105 transition-transform">
+                <Scan className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
                 <span className="text-xs sm:text-sm font-extrabold text-[#0A143A] block">
-                  {lang === 'uz' ? 'QR Skanerlash' : 'Scan QR Code'}
+                  {lang === 'uz' ? 'Skanerlash' : 'Scan QR'}
                 </span>
-                <span className="text-[11px] text-[#4A577D]">
-                  {lang === 'uz' ? 'Kamera yoki rasm' : 'Camera or image upload'}
+                <span className="text-[10px] sm:text-[11px] text-[#4A577D] truncate block">
+                  {lang === 'uz' ? 'Kamera yoki rasm' : 'Camera or image'}
                 </span>
               </div>
             </button>
@@ -173,17 +173,17 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             <button
               type="button"
               onClick={onExploreTemplates}
-              className="p-4 rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-all cursor-pointer shadow-xs flex flex-col justify-between text-left group"
+              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-all cursor-pointer shadow-xs flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
             >
-              <div className="w-10 h-10 rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-3 group-hover:scale-105 transition-transform">
-                <LayoutTemplate className="w-5 h-5" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-2 sm:mb-3 group-hover:scale-105 transition-transform">
+                <LayoutTemplate className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
                 <span className="text-xs sm:text-sm font-extrabold text-[#0A143A] block">
-                  {lang === 'uz' ? 'Shablonlar' : 'Browse Templates'}
+                  {lang === 'uz' ? 'Shablonlar' : 'Templates'}
                 </span>
-                <span className="text-[11px] text-[#4A577D]">
-                  {lang === 'uz' ? '30+ tayyor uslub' : '30+ curated styles'}
+                <span className="text-[10px] sm:text-[11px] text-[#4A577D] truncate block">
+                  {lang === 'uz' ? '30+ tayyor uslub' : '30+ styles'}
                 </span>
               </div>
             </button>
@@ -191,17 +191,17 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             <button
               type="button"
               onClick={onOpenSettings}
-              className="p-4 rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-all cursor-pointer shadow-xs flex flex-col justify-between text-left group"
+              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-all cursor-pointer shadow-xs flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
             >
-              <div className="w-10 h-10 rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-3 group-hover:scale-105 transition-transform">
-                <SettingsIcon className="w-5 h-5" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-2 sm:mb-3 group-hover:scale-105 transition-transform">
+                <SettingsIcon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
                 <span className="text-xs sm:text-sm font-extrabold text-[#0A143A] block">
-                  {lang === 'uz' ? 'Sozlamalar' : 'User Settings'}
+                  {lang === 'uz' ? 'Sozlamalar' : 'Settings'}
                 </span>
-                <span className="text-[11px] text-[#4A577D]">
-                  {lang === 'uz' ? 'Profil, til va format' : 'Profile, language & format'}
+                <span className="text-[10px] sm:text-[11px] text-[#4A577D] truncate block">
+                  {lang === 'uz' ? 'Profil va til' : 'Profile & lang'}
                 </span>
               </div>
             </button>
