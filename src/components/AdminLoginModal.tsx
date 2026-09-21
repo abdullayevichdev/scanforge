@@ -37,7 +37,11 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
       setPin('');
       onSuccess();
     } else {
-      setErrorMessage(isUz ? "Noto‘g‘ri admin kodi." : "Incorrect admin code.");
+      setErrorMessage(
+        res.error 
+          ? (isUz ? (res.error === 'Incorrect admin code.' ? "Noto‘g‘ri admin kodi." : res.error) : res.error)
+          : (isUz ? "Noto‘g‘ri admin kodi." : "Incorrect admin code.")
+      );
     }
   };
 

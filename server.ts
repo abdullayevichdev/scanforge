@@ -8,7 +8,8 @@ const PORT = 3000;
 
 app.use(express.json());
 
-const ADMIN_PIN = process.env.ADMIN_PIN || '765';
+const rawAdminPin = process.env.ADMIN_PIN || '765';
+const ADMIN_PIN = rawAdminPin.replace(/^["']|["']$/g, '').trim() || '765';
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'scanforge_admin_secret_auth_salt_998_2026';
 
 function generateAdminToken(): string {
