@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import jsQR from 'jsqr';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -332,12 +333,20 @@ export const QRScannerSection: React.FC<QRScannerSectionProps> = ({
                   {/* Scanning Crosshair Overlay */}
                   {cameraActive && (
                     <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                      <div className="w-56 h-56 border-2 border-[#1FD0C2] rounded-[24px] relative shadow-[0_0_25px_rgba(31,208,194,0.4)]">
-                        <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-[#1FD0C2] rounded-tl-[12px]" />
-                        <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-[#1FD0C2] rounded-tr-[12px]" />
-                        <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-[#1FD0C2] rounded-bl-[12px]" />
-                        <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-[#1FD0C2] rounded-br-[12px]" />
-                        <div className="w-full h-0.5 bg-[#1FD0C2] animate-pulse absolute top-1/2 -translate-y-1/2" />
+                      <div className="w-56 h-56 sm:w-64 sm:h-64 border-2 border-[#1FD0C2]/50 rounded-[28px] relative shadow-[0_0_35px_rgba(31,208,194,0.35)] overflow-hidden">
+                        {/* High-Tech Glowing Corner Reticles */}
+                        <div className="absolute top-0 left-0 w-7 h-7 border-t-4 border-l-4 border-[#1FD0C2] rounded-tl-[14px]" />
+                        <div className="absolute top-0 right-0 w-7 h-7 border-t-4 border-r-4 border-[#1FD0C2] rounded-tr-[14px]" />
+                        <div className="absolute bottom-0 left-0 w-7 h-7 border-b-4 border-l-4 border-[#1FD0C2] rounded-bl-[14px]" />
+                        <div className="absolute bottom-0 right-0 w-7 h-7 border-b-4 border-r-4 border-[#1FD0C2] rounded-br-[14px]" />
+                        
+                        {/* Sweeping Laser Scanner Beam */}
+                        <div className="laser-scanner-beam" />
+
+                        {/* Subtle target grid center reticle */}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                          <div className="w-8 h-8 border border-white/80 rounded-full" />
+                        </div>
                       </div>
                     </div>
                   )}
@@ -417,73 +426,89 @@ export const QRScannerSection: React.FC<QRScannerSectionProps> = ({
             )}
 
             {/* Scan Result Card */}
-            {scanResult && (
-              <div className="p-5 sm:p-6 rounded-[26px] bg-white border border-[#132A86]/15 shadow-md space-y-4 animate-fadeIn">
-                <div className="flex items-center justify-between pb-3 border-b border-[#132A86]/10">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#132A86]">
-                      {lang === 'uz' ? 'QR Kod Natijasi' : 'Decoded Result'}
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#132A86]/10 text-[#132A86] uppercase">
-                      {detectedType}
+            <AnimatePresence>
+              {scanResult && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 16, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 16, scale: 0.98 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="p-5 sm:p-6 rounded-[26px] bg-white border border-[#132A86]/15 shadow-md space-y-4"
+                >
+                  <div className="flex items-center justify-between pb-3 border-b border-[#132A86]/10">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#132A86]">
+                        {lang === 'uz' ? 'QR Kod Natijasi' : 'Decoded Result'}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#132A86]/10 text-[#132A86] uppercase">
+                        {detectedType}
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5" />
+                      {lang === 'uz' ? '100% O\'qildi' : '100% Decoded'}
                     </span>
                   </div>
-                  <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5" />
-                    {lang === 'uz' ? '100% O\'qildi' : '100% Decoded'}
-                  </span>
-                </div>
 
-                {/* Content Box */}
-                <div className="p-4 rounded-[18px] bg-slate-50 border border-slate-200/80 font-mono text-xs text-[#0A143A] break-all select-all leading-relaxed max-h-40 overflow-y-auto">
-                  {scanResult}
-                </div>
+                  {/* Content Box */}
+                  <div className="p-4 rounded-[18px] bg-slate-50 border border-slate-200/80 font-mono text-xs text-[#0A143A] break-all select-all leading-relaxed max-h-40 overflow-y-auto">
+                    {scanResult}
+                  </div>
 
-                {/* Action Toolbar */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <button
-                    type="button"
-                    onClick={handleCopy}
-                    className="apple-glass-secondary py-2.5 px-4 rounded-[14px] text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-                  >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-[#132A86]" />}
-                    <span>{copied ? (lang === 'uz' ? 'Nusxalandi' : 'Copied') : (lang === 'uz' ? 'Nusxa Olish' : 'Copy Text')}</span>
-                  </button>
-
-                  {detectedType === 'url' && (
-                    <button
+                  {/* Action Toolbar */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <motion.button
                       type="button"
-                      onClick={handleOpenLink}
-                      className="apple-glass-secondary py-2.5 px-4 rounded-[14px] text-xs font-bold flex items-center gap-1.5 cursor-pointer text-[#132A86]"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={handleCopy}
+                      className="apple-glass-secondary py-2.5 px-4 rounded-[14px] text-xs font-bold flex items-center gap-1.5 cursor-pointer"
                     >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      <span>{lang === 'uz' ? 'Havolaga O\'tish' : 'Open Link'}</span>
-                    </button>
-                  )}
+                      {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-[#132A86]" />}
+                      <span>{copied ? (lang === 'uz' ? 'Nusxalandi' : 'Copied') : (lang === 'uz' ? 'Nusxa Olish' : 'Copy Text')}</span>
+                    </motion.button>
 
-                  {onLoadIntoBuilder && (
-                    <button
+                    {detectedType === 'url' && (
+                      <motion.button
+                        type="button"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleOpenLink}
+                        className="apple-glass-secondary py-2.5 px-4 rounded-[14px] text-xs font-bold flex items-center gap-1.5 cursor-pointer text-[#132A86]"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>{lang === 'uz' ? 'Havolaga O\'tish' : 'Open Link'}</span>
+                      </motion.button>
+                    )}
+
+                    {onLoadIntoBuilder && (
+                      <motion.button
+                        type="button"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleEditInBuilder}
+                        className="apple-glass-cta py-2.5 px-4 rounded-[14px] text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-xs"
+                      >
+                        <Zap className="w-3.5 h-3.5 text-[#1FD0C2]" />
+                        <span>{lang === 'uz' ? 'Konstruktorda Qayta Dizayn Qilish' : 'Restyle in Builder'}</span>
+                      </motion.button>
+                    )}
+
+                    <motion.button
                       type="button"
-                      onClick={handleEditInBuilder}
-                      className="apple-glass-cta py-2.5 px-4 rounded-[14px] text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-xs"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={handleSaveScanned}
+                      className="apple-glass-secondary py-2.5 px-4 rounded-[14px] text-xs font-bold flex items-center gap-1.5 cursor-pointer ml-auto"
                     >
-                      <Zap className="w-3.5 h-3.5 text-[#1FD0C2]" />
-                      <span>{lang === 'uz' ? 'Konstruktorda Qayta Dizayn Qilish' : 'Restyle in Builder'}</span>
-                    </button>
-                  )}
-
-                  <button
-                    type="button"
-                    onClick={handleSaveScanned}
-                    className="apple-glass-secondary py-2.5 px-4 rounded-[14px] text-xs font-bold flex items-center gap-1.5 cursor-pointer ml-auto"
-                  >
-                    {saved ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Bookmark className="w-3.5 h-3.5 text-[#132A86]" />}
-                    <span>{saved ? (lang === 'uz' ? 'Saqlandi' : 'Saved') : (lang === 'uz' ? 'Saqlab Qo\'yish' : 'Save QR')}</span>
-                  </button>
-                </div>
-              </div>
-            )}
+                      {saved ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Bookmark className="w-3.5 h-3.5 text-[#132A86]" />}
+                      <span>{saved ? (lang === 'uz' ? 'Saqlandi' : 'Saved') : (lang === 'uz' ? 'Saqlab Qo\'yish' : 'Save QR')}</span>
+                    </motion.button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
           </div>
         </div>

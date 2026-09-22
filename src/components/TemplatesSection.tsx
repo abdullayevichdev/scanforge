@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { QRRenderer } from './QRRenderer';
 import { TEMPLATES_DATA } from '../data/templatesData';
@@ -215,9 +216,15 @@ export const TemplatesSection: React.FC<TemplatesSectionProps> = ({
             {filteredTemplates.map((tpl) => {
               const isFav = favorites.includes(tpl.id);
               return (
-                <div
+                <motion.div
                   key={tpl.id}
-                  className="liquid-glass-elevated bg-white/95 rounded-[28px] p-5 border border-white/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group relative"
+                  layout
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  whileHover={{ y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="liquid-glass-elevated bg-white/95 rounded-[28px] p-5 border border-white/90 shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between group relative"
                 >
                   {/* Card Top: Category Pill & Favorite Toggle */}
                   <div className="flex items-center justify-between gap-2 mb-3">
@@ -225,18 +232,20 @@ export const TemplatesSection: React.FC<TemplatesSectionProps> = ({
                       {lang === 'uz' ? tpl.categoryNameUz : tpl.categoryNameEn}
                     </span>
 
-                    <button
+                    <motion.button
                       type="button"
+                      whileHover={{ scale: 1.15 }}
+                      whileTap={{ scale: 0.85 }}
                       onClick={(e) => toggleFavorite(tpl.id, e)}
-                      className={`p-2 rounded-full transition-all cursor-pointer ${
+                      className={`p-2 rounded-full transition-colors cursor-pointer ${
                         isFav 
-                          ? 'bg-rose-50 text-rose-600 scale-110' 
+                          ? 'bg-rose-50 text-rose-600' 
                           : 'text-[#4A577D] hover:text-rose-500 hover:bg-rose-50/50'
                       }`}
                       title={lang === 'uz' ? 'Sevimlilarga qo\'shish' : 'Add to favorites'}
                     >
                       <Heart className={`w-4 h-4 ${isFav ? 'fill-rose-500 text-rose-500' : ''}`} />
-                    </button>
+                    </motion.button>
                   </div>
 
                   {/* QR Preview Showcase */}
@@ -257,15 +266,17 @@ export const TemplatesSection: React.FC<TemplatesSectionProps> = ({
                   </div>
 
                   {/* "Use Template" CTA */}
-                  <button
+                  <motion.button
                     type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => handleApplyTemplate(tpl)}
-                    className="apple-glass-cta w-full py-2.5 rounded-[16px] text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-sm group-hover:shadow-md"
+                    className="apple-glass-cta shimmer-button w-full py-2.5 rounded-[16px] text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-sm group-hover:shadow-md"
                   >
                     <span>{lang === 'uz' ? 'Shablondan Foydalanish' : 'Use Template'}</span>
                     <ArrowRight className="w-3.5 h-3.5 text-[#1FD0C2] group-hover:translate-x-0.5 transition-transform" />
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
               );
             })}
           </div>

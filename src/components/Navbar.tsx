@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { BrandLogo } from './BrandLogo';
@@ -87,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenProfile, onOpenAbout, onOp
             {t.nav.builder}
           </a>
 
-          {/* Tools / Studios Dropdown */}
+            {/* Tools / Studios Dropdown */}
           <div className="relative">
             <button
               type="button"
@@ -95,36 +96,42 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenProfile, onOpenAbout, onOp
                 setToolsDropdownOpen(!toolsDropdownOpen);
               }}
               onMouseEnter={() => setToolsDropdownOpen(true)}
-              className="px-3 py-1.5 rounded-[14px] text-[13px] font-bold text-[#132A86] bg-[#132A86]/6 hover:bg-[#132A86]/10 transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 rounded-[14px] text-[13px] font-bold text-[#132A86] bg-[#132A86]/6 hover:bg-[#132A86]/10 active:scale-[0.98] transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#1FD0C2]" />
               <span>{lang === 'uz' ? 'Maxsus Studiyalar' : 'Studios'}</span>
-              <ChevronDown className="w-3 h-3" />
+              <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${toolsDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
-            {toolsDropdownOpen && (
-              <div 
-                onMouseLeave={() => setToolsDropdownOpen(false)}
-                className="absolute top-full left-0 mt-1.5 w-64 liquid-glass-elevated rounded-[20px] p-2 border border-white/90 shadow-xl z-50 animate-fade-in"
-              >
-                {specialTools.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <a
-                      key={tool.href}
-                      href={tool.href}
-                      onClick={() => setToolsDropdownOpen(false)}
-                      className="flex items-center gap-2.5 p-2.5 rounded-[14px] text-xs font-medium text-[#0A143A] hover:bg-[#132A86]/8 hover:text-[#132A86] transition-colors"
-                    >
-                      <div className="w-7 h-7 rounded-[10px] bg-white flex items-center justify-center text-[#132A86] shadow-xs shrink-0">
-                        <Icon className="w-3.5 h-3.5 text-[#1FD0C2]" />
-                      </div>
-                      <span className="truncate">{tool.label}</span>
-                    </a>
-                  );
-                })}
-              </div>
-            )}
+            <AnimatePresence>
+              {toolsDropdownOpen && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 6, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                  transition={{ duration: 0.18, ease: 'easeOut' }}
+                  onMouseLeave={() => setToolsDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-2 w-64 liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[22px] p-2 border border-white/90 shadow-2xl z-50 origin-top-left"
+                >
+                  {specialTools.map((tool) => {
+                    const Icon = tool.icon;
+                    return (
+                      <a
+                        key={tool.href}
+                        href={tool.href}
+                        onClick={() => setToolsDropdownOpen(false)}
+                        className="flex items-center gap-2.5 p-2.5 rounded-[14px] text-xs font-medium text-[#0A143A] hover:bg-[#132A86]/8 hover:text-[#132A86] transition-colors"
+                      >
+                        <div className="w-7 h-7 rounded-[10px] bg-white flex items-center justify-center text-[#132A86] shadow-xs shrink-0">
+                          <Icon className="w-3.5 h-3.5 text-[#1FD0C2]" />
+                        </div>
+                        <span className="truncate">{tool.label}</span>
+                      </a>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <a
@@ -290,11 +297,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenProfile, onOpenAbout, onOp
       </div>
 
       {/* Mobile Menu Drawer - Compact Liquid Glass View */}
-      {mobileMenuOpen && (
-        <div 
-          id="mobile-nav-drawer"
-          className="lg:hidden mt-2 liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[24px] p-4 shadow-[0_16px_40px_rgba(19,42,134,0.14)] border border-white/95 max-h-[80vh] overflow-y-auto scrollbar-none touch-pan-y animate-fade-in space-y-3.5"
-        >
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            id="mobile-nav-drawer"
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:hidden mt-2 liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[24px] p-4 shadow-[0_16px_40px_rgba(19,42,134,0.14)] border border-white/95 max-h-[80vh] overflow-y-auto scrollbar-none touch-pan-y space-y-3.5 origin-top"
+          >
           {/* User Profile Card inside Mobile Drawer */}
           {user ? (
             <div className="p-3 rounded-[18px] bg-gradient-to-r from-[#132A86]/6 to-[#1FD0C2]/10 border border-[#132A86]/10 flex items-center justify-between">
@@ -434,8 +446,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenProfile, onOpenAbout, onOp
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
-    </header>
+    </AnimatePresence>
+  </header>
   );
 };

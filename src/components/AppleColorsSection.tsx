@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { Sparkles, Check } from 'lucide-react';
 import { APPLE_COLORS } from '../presets';
 import { QRStyleConfig } from '../types';
@@ -67,18 +68,19 @@ export const AppleColorsSection: React.FC<AppleColorsSectionProps> = ({ config, 
         {/* Target Slot Selector */}
         <div className="flex items-center gap-1 bg-white/80 p-1 rounded-[14px] border border-[#132A86]/10 text-[11px] overflow-x-auto scrollbar-none touch-pan-x max-w-full">
           {(['fg', 'grad1', 'grad2', 'bg', 'eyeOuter'] as const).map((slot) => (
-            <button
+            <motion.button
               key={slot}
               type="button"
+              whileTap={{ scale: 0.94 }}
               onClick={() => setTargetSlot(slot)}
-              className={`px-2.5 py-1.5 rounded-[10px] font-semibold whitespace-nowrap transition-all cursor-pointer touch-manipulation shrink-0 ${
+              className={`px-2.5 py-1.5 rounded-[10px] font-semibold whitespace-nowrap transition-colors cursor-pointer touch-manipulation shrink-0 relative ${
                 targetSlot === slot
                   ? 'bg-[#132A86] text-white shadow-sm'
                   : 'text-[#4A577D] hover:text-[#0A143A] hover:bg-white/60 active:bg-white'
               }`}
             >
               {slotLabels[slot]}
-            </button>
+            </motion.button>
           ))}
         </div>
       </div>
@@ -94,11 +96,14 @@ export const AppleColorsSection: React.FC<AppleColorsSectionProps> = ({ config, 
             (targetSlot === 'eyeOuter' && config.eyeOuterColor.toLowerCase() === item.hex.toLowerCase());
 
           return (
-            <button
+            <motion.button
               key={item.id}
               type="button"
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.18 }}
               onClick={() => applyColor(item.hex)}
-              className={`p-2 rounded-[16px] border transition-all text-left group flex flex-col justify-between h-20 cursor-pointer ${
+              className={`p-2 rounded-[16px] border text-left group flex flex-col justify-between h-20 cursor-pointer transition-colors ${
                 isSelected
                   ? 'border-[#132A86] ring-2 ring-[#132A86]/20 bg-white shadow-md'
                   : 'border-[#132A86]/10 bg-white/70 hover:bg-white hover:border-[#1FD0C2]'
@@ -106,10 +111,18 @@ export const AppleColorsSection: React.FC<AppleColorsSectionProps> = ({ config, 
             >
               <div className="flex items-center justify-between w-full">
                 <span
-                  className="w-5 h-5 rounded-full shadow-inner border border-black/10 flex items-center justify-center shrink-0"
+                  className="w-5 h-5 rounded-full shadow-inner border border-black/10 flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
                   style={{ backgroundColor: item.hex }}
                 >
-                  {isSelected && <Check className="w-3 h-3 text-white drop-shadow-sm" />}
+                  {isSelected && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                    >
+                      <Check className="w-3 h-3 text-white drop-shadow-sm" />
+                    </motion.div>
+                  )}
                 </span>
                 <span className="text-[10px] font-mono text-[#4A577D]">
                   {item.hex}
@@ -121,7 +134,7 @@ export const AppleColorsSection: React.FC<AppleColorsSectionProps> = ({ config, 
                   {lang === 'uz' ? item.nameUz : item.nameEn}
                 </p>
               </div>
-            </button>
+            </motion.button>
           );
         })}
       </div>

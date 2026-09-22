@@ -129,38 +129,186 @@
     inset 0 1px 1.5px rgba(255, 255, 255, 1);
 }
 
-/* Atmospheric Floating Blobs for Section 9 */
+/* Atmospheric Floating Blobs for Section 9 (GPU Accelerated) */
 @keyframes atmosphericFloat {
   0%, 100% {
-    transform: translate(0px, 0px) scale(1);
+    transform: translate3d(0px, 0px, 0) scale(1);
   }
   33% {
-    transform: translate(30px, -20px) scale(1.04);
+    transform: translate3d(24px, -18px, 0) scale(1.03);
   }
   66% {
-    transform: translate(-20px, 25px) scale(0.96);
+    transform: translate3d(-18px, 20px, 0) scale(0.97);
   }
 }
 
 .blob-float-1 {
-  animation: atmosphericFloat 24s ease-in-out infinite;
+  will-change: transform;
+  animation: atmosphericFloat 22s ease-in-out infinite;
 }
 .blob-float-2 {
-  animation: atmosphericFloat 28s ease-in-out infinite reverse;
+  will-change: transform;
+  animation: atmosphericFloat 26s ease-in-out infinite reverse;
 }
 
 /* Gentle QR card floating animation for Section 8 & 10 */
 @keyframes gentleFloat {
   0%, 100% {
-    transform: translateY(0px);
+    transform: translate3d(0px, 0px, 0);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translate3d(0px, -7px, 0);
   }
 }
 
 .gentle-floating-card {
-  animation: gentleFloat 7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+  animation: gentleFloat 6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+/* Laser Scanner Beam Sweep (Hardware Accelerated) */
+@keyframes laserScanSweep {
+  0% {
+    top: 5%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 95%;
+    opacity: 0;
+  }
+}
+
+.laser-scanner-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(31, 208, 194, 0) 0%, rgba(31, 208, 194, 0.9) 20%, rgba(255, 255, 255, 1) 50%, rgba(31, 208, 194, 0.9) 80%, rgba(31, 208, 194, 0) 100%);
+  box-shadow: 
+    0 0 15px rgba(31, 208, 194, 0.8),
+    0 0 30px rgba(31, 208, 194, 0.4);
+  animation: laserScanSweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  will-change: top, opacity;
+  pointer-events: none;
+}
+
+/* Subtle Shimmer for interactive elements */
+@keyframes shimmerReflection {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(25deg);
+  }
+}
+
+.shimmer-button {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-button::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%) rotate(25deg);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+.shimmer-button:hover::after {
+  opacity: 1;
+  animation: shimmerReflection 1.2s ease-in-out;
+}
+
+/* Gentle pulse glow for active badges */
+@keyframes softPulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.soft-pulse-glow {
+  animation: softPulseGlow 3s ease-in-out infinite;
+}
+
+/* Expanding Radar Ring for Mobile Floating Action and Live Preview */
+@keyframes pulseRadarRing {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(31, 208, 194, 0.65);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 14px rgba(31, 208, 194, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(31, 208, 194, 0);
+  }
+}
+
+.pulse-radar-ring {
+  animation: pulseRadarRing 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Interactive Card Gentle Hover Glow */
+.interactive-card-hover {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
+}
+.interactive-card-hover:hover {
+  transform: translate3d(0, -4px, 0);
+  box-shadow: 0 20px 40px -15px rgba(19, 42, 134, 0.12), 0 0 20px -3px rgba(31, 208, 194, 0.18);
+  border-color: rgba(31, 208, 194, 0.35);
+}
+
+/* Fluid Animated Gradient for Headline Emphasis */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-accent {
+  background-size: 200% 200%;
+  animation: gradientFlow 5s ease infinite;
+}
+
+/* Reduced Motion Preference for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Custom Scrollbar */

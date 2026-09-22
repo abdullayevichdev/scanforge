@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -134,12 +135,15 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
 
           {/* Quick Action Tiles */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
-            <button
+            <motion.button
               type="button"
+              whileHover={{ y: -3, scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.2 }}
               onClick={onNewQR}
-              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-[#132A86] text-white hover:bg-[#0E216B] transition-all cursor-pointer shadow-md flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
+              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-[#132A86] text-white hover:bg-[#0E216B] transition-colors cursor-pointer shadow-md flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
             >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-white/15 flex items-center justify-center text-[#1FD0C2] mb-2 sm:mb-3 group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-white/15 flex items-center justify-center text-[#1FD0C2] mb-2 sm:mb-3 group-hover:scale-110 transition-transform">
                 <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
@@ -150,14 +154,17 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                   {lang === 'uz' ? '12 xil formatda' : '12 formats'}
                 </span>
               </div>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
               type="button"
+              whileHover={{ y: -3, scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.2 }}
               onClick={onScanQR}
-              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-all cursor-pointer shadow-xs flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
+              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-colors cursor-pointer shadow-xs flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
             >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-2 sm:mb-3 group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-2 sm:mb-3 group-hover:scale-110 transition-transform">
                 <Scan className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
@@ -168,14 +175,17 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                   {lang === 'uz' ? 'Kamera yoki rasm' : 'Camera or image'}
                 </span>
               </div>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
               type="button"
+              whileHover={{ y: -3, scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.2 }}
               onClick={onExploreTemplates}
-              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-all cursor-pointer shadow-xs flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
+              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-colors cursor-pointer shadow-xs flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
             >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-2 sm:mb-3 group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-2 sm:mb-3 group-hover:scale-110 transition-transform">
                 <LayoutTemplate className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
@@ -186,14 +196,17 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                   {lang === 'uz' ? '30+ tayyor uslub' : '30+ styles'}
                 </span>
               </div>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
               type="button"
+              whileHover={{ y: -3, scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.2 }}
               onClick={onOpenSettings}
-              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-all cursor-pointer shadow-xs flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
+              className="p-3.5 sm:p-4 rounded-[18px] sm:rounded-[22px] bg-white border border-[#132A86]/10 hover:border-[#132A86]/30 hover:bg-[#EEF6FF]/50 transition-colors cursor-pointer shadow-xs flex flex-col justify-between text-left group touch-manipulation min-h-[105px]"
             >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-2 sm:mb-3 group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] bg-[#132A86]/8 flex items-center justify-center text-[#132A86] mb-2 sm:mb-3 group-hover:scale-110 transition-transform">
                 <SettingsIcon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
@@ -204,7 +217,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                   {lang === 'uz' ? 'Profil va til' : 'Profile & lang'}
                 </span>
               </div>
-            </button>
+            </motion.button>
           </div>
 
           {/* Recent QR Codes Section */}
@@ -245,9 +258,12 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {savedQRs.map((item) => (
-                  <div
+                  <motion.div
                     key={item.id}
-                    className="p-4 rounded-[24px] bg-white border border-[#132A86]/10 shadow-xs hover:shadow-md transition-all space-y-3 flex flex-col justify-between"
+                    layout
+                    whileHover={{ y: -3 }}
+                    transition={{ duration: 0.2 }}
+                    className="p-4 rounded-[24px] bg-white border border-[#132A86]/10 shadow-xs hover:shadow-md transition-shadow space-y-3 flex flex-col justify-between"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="w-16 h-16 rounded-[16px] bg-slate-50 p-1.5 border border-slate-100 flex items-center justify-center shrink-0">
@@ -270,8 +286,9 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                     {/* Action buttons */}
                     <div className="flex items-center justify-between pt-2 border-t border-[#132A86]/8">
                       <div className="flex items-center gap-1">
-                        <button
+                        <motion.button
                           type="button"
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => toggleFavoriteQR(item.id)}
                           className={`p-1.5 rounded-[10px] hover:bg-slate-100 transition-colors cursor-pointer ${
                             item.favorite ? 'text-red-500' : 'text-[#4A577D]'
@@ -279,43 +296,48 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
                           title={lang === 'uz' ? 'Sevimli' : 'Favorite'}
                         >
                           <Heart className={`w-3.5 h-3.5 ${item.favorite ? 'fill-current' : ''}`} />
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
                           type="button"
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => handleCopyContent(item.content)}
                           className="p-1.5 rounded-[10px] text-[#4A577D] hover:text-[#0A143A] hover:bg-slate-100 transition-colors cursor-pointer"
                           title={lang === 'uz' ? 'Nusxa olish' : 'Copy link'}
                         >
                           <Copy className="w-3.5 h-3.5" />
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
                           type="button"
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => handleDuplicate(item)}
                           className="p-1.5 rounded-[10px] text-[#4A577D] hover:text-[#0A143A] hover:bg-slate-100 transition-colors cursor-pointer"
                           title={lang === 'uz' ? 'Nusxasini yaratish' : 'Duplicate'}
                         >
                           <Layers className="w-3.5 h-3.5" />
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
                           type="button"
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => deleteQRRecord(item.id)}
                           className="p-1.5 rounded-[10px] text-red-500 hover:bg-red-50 transition-colors cursor-pointer"
                           title={lang === 'uz' ? 'O\'chirish' : 'Delete'}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                        </motion.button>
                       </div>
 
-                      <button
+                      <motion.button
                         type="button"
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.96 }}
                         onClick={() => onEditQR(item)}
                         className="py-1.5 px-3 rounded-[12px] bg-[#132A86]/8 hover:bg-[#132A86] hover:text-white text-xs font-bold text-[#132A86] transition-all cursor-pointer flex items-center gap-1"
                       >
                         <Edit3 className="w-3 h-3" />
                         <span>{lang === 'uz' ? 'Tahrirlash' : 'Edit'}</span>
-                      </button>
+                      </motion.button>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             )}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { QRRenderer } from './QRRenderer';
 import { PRESETS } from '../presets';
@@ -60,54 +61,88 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* Left Hero Content */}
-          <div className="lg:col-span-7 text-center lg:text-left">
+          <motion.div 
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 text-center lg:text-left"
+          >
             {/* Top pill badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full liquid-glass border border-[#132A86]/10 mb-6 shadow-sm">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full liquid-glass border border-[#132A86]/10 mb-6 shadow-sm hover:border-[#1FD0C2]/40 transition-colors"
+            >
               <Sparkles className="w-3.5 h-3.5 text-[#1FD0C2]" />
               <span className="text-xs font-semibold tracking-wide text-[#132A86]">
                 {t.hero.badge}
               </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#1FD0C2] animate-pulse" />
-            </div>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1FD0C2] soft-pulse-glow" />
+            </motion.div>
 
             {/* Apple-like Typography Headlines */}
-            <h1 className="text-3xl xs:text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-[#0A143A] leading-[1.15] sm:leading-[1.12] mb-4 sm:mb-5">
+            <motion.h1 
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl xs:text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-[#0A143A] leading-[1.15] sm:leading-[1.12] mb-4 sm:mb-5"
+            >
               <span className="block">{t.hero.headlineLine1}</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#132A86] via-[#0F267A] to-[#1FD0C2]">
                 {t.hero.headlineLine2}
               </span>
-            </h1>
+            </motion.h1>
 
             {/* Supporting paragraph with generous line height and line width */}
-            <p className="max-w-2xl mx-auto lg:mx-0 text-sm sm:text-lg text-[#4A577D] font-normal leading-relaxed mb-6 sm:mb-8">
+            <motion.p 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="max-w-2xl mx-auto lg:mx-0 text-sm sm:text-lg text-[#4A577D] font-normal leading-relaxed mb-6 sm:mb-8"
+            >
               {t.hero.supportingText}
-            </p>
+            </motion.p>
 
             {/* CTAs: Apple-Style Premium Glass Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 sm:mb-10">
-              <button
+            <motion.div 
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 sm:mb-10"
+            >
+              <motion.button
                 type="button"
                 id="hero-primary-cta"
                 onClick={onGetStarted}
-                className="apple-glass-cta w-full sm:w-auto px-7 py-3.5 rounded-[18px] text-sm sm:text-base font-semibold flex items-center justify-center gap-2.5 group cursor-pointer shadow-lg touch-manipulation min-h-[48px]"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="apple-glass-cta shimmer-button w-full sm:w-auto px-7 py-3.5 rounded-[18px] text-sm sm:text-base font-semibold flex items-center justify-center gap-2.5 group cursor-pointer shadow-lg touch-manipulation min-h-[48px]"
               >
                 <span>{t.hero.primaryCta}</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </button>
+              </motion.button>
 
-              <button
+              <motion.button
                 type="button"
                 id="hero-secondary-cta"
                 onClick={onExploreTemplates}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
                 className="apple-glass-secondary w-full sm:w-auto px-7 py-3.5 rounded-[18px] text-sm sm:text-base font-semibold flex items-center justify-center gap-2 cursor-pointer touch-manipulation min-h-[48px]"
               >
                 <Layers className="w-4 h-4 text-[#132A86]" />
                 <span>{t.hero.secondaryCta}</span>
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
             {/* Value Props & Indicators */}
-            <div className="pt-5 sm:pt-6 border-t border-[#132A86]/8 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto lg:mx-0">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="pt-5 sm:pt-6 border-t border-[#132A86]/8 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto lg:mx-0"
+            >
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1FD0C2] shrink-0" />
                 <span className="text-[11px] sm:text-[13px] font-medium text-[#0A143A]">
@@ -126,11 +161,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   {t.hero.statLimit}
                 </span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right Hero: Floating QR Preview Composition (Section 8 & 10) */}
-          <div className="lg:col-span-5 flex justify-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.94, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 flex justify-center"
+          >
             <div className="relative w-full max-w-[380px] sm:max-w-[420px]">
               
               {/* Subtle back illumination glow */}
@@ -157,12 +197,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   </span>
                 </div>
 
-                {/* QR Canvas Display */}
-                <div className="bg-white/90 rounded-[22px] sm:rounded-[26px] p-3 sm:p-5 flex items-center justify-center shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6">
+                {/* QR Canvas Display with smooth layout transition */}
+                <motion.div 
+                  layout
+                  key={activePreset.id}
+                  initial={{ opacity: 0.7, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  className="bg-white/90 rounded-[22px] sm:rounded-[26px] p-3 sm:p-5 flex items-center justify-center shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6"
+                >
                   <div className="w-[190px] h-[190px] sm:w-[240px] sm:h-[240px] flex items-center justify-center">
                     <QRRenderer value={heroConfig.content} config={heroConfig} sizePx={220} svgId="scanforge-hero-preview-svg" />
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Interactive Preset Chips: Allows instantaneous preview change on hover/click */}
                 <div className="mt-5 pt-3">
@@ -175,38 +222,43 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   </div>
                   <div className="grid grid-cols-4 gap-1.5">
                     {heroPresets.map((preset, idx) => (
-                      <button
+                      <motion.button
                         key={preset.id}
                         type="button"
+                        whileHover={{ scale: 1.04 }}
+                        whileTap={{ scale: 0.96 }}
                         onClick={() => setActivePresetIndex(idx)}
-                        className={`px-2 py-1.5 rounded-[12px] text-[11px] font-semibold transition-all duration-200 cursor-pointer ${
+                        className={`px-2 py-1.5 rounded-[12px] text-[11px] font-semibold transition-colors duration-200 cursor-pointer ${
                           activePresetIndex === idx
-                            ? 'bg-[#132A86] text-white shadow-sm scale-[1.02]'
+                            ? 'bg-[#132A86] text-white shadow-sm'
                             : 'bg-white/80 text-[#0A143A] hover:bg-white border border-[#132A86]/8'
                         }`}
                       >
                         {preset.name.split(' ')[0]}
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                 </div>
 
                 {/* Quick Action Button */}
-                <button
+                <motion.button
                   type="button"
                   onClick={onGetStarted}
-                  className="mt-4 w-full py-2.5 rounded-[16px] bg-[#EEF6FF] hover:bg-[#E2EDFF] text-[#132A86] text-xs font-bold transition-all duration-200 flex items-center justify-center gap-1.5 border border-[#132A86]/10"
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="mt-4 w-full py-2.5 rounded-[16px] bg-[#EEF6FF] hover:bg-[#E2EDFF] text-[#132A86] text-xs font-bold transition-all duration-200 flex items-center justify-center gap-1.5 border border-[#132A86]/10 cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>{t.builder.sectionTitle}</span>
-                </button>
+                </motion.button>
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>
     </section>
   );
 };
+

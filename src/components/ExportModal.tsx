@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   X, 
   Download, 
@@ -36,8 +37,6 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   const [resolution, setResolution] = useState<number>(2048);
   const [transparentBg, setTransparentBg] = useState<boolean>(false);
   const [isExporting, setIsExporting] = useState<boolean>(false);
-
-  if (!isOpen) return null;
 
   const qualityPresets = [
     { label: 'Standard', res: 512, desc: '512 × 512 px (Veb / Ekran)', badge: 'Tezkor' },
@@ -80,18 +79,28 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
-      {/* Backdrop */}
-      <div 
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity" 
-        onClick={onClose} 
-      />
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+          {/* Backdrop */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-md" 
+            onClick={onClose} 
+          />
 
-      {/* Modal Box */}
-      <div 
-        className="relative w-full max-w-2xl liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[26px] sm:rounded-[36px] border border-white/90 shadow-2xl p-4 sm:p-8 overflow-hidden z-10 max-h-[90vh] flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
+          {/* Modal Box */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 15 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-2xl liquid-glass-elevated bg-white/95 backdrop-blur-2xl rounded-[26px] sm:rounded-[36px] border border-white/90 shadow-2xl p-4 sm:p-8 overflow-hidden z-10 max-h-[90vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
         {/* Modal Header */}
         <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-[#132A86]/10 mb-4 sm:mb-5">
           <div className="flex items-center gap-2 sm:gap-2.5">
@@ -262,7 +271,9 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           </button>
         </div>
 
-      </div>
-    </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 };

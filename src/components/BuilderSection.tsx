@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
   Sliders, 
@@ -366,12 +367,14 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
                   const Icon = tab.icon;
                   const isActive = activeType === tab.id;
                   return (
-                    <button
+                    <motion.button
                       key={tab.id}
                       type="button"
                       id={`tab-type-${tab.id}`}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => setActiveType(tab.id)}
-                      className={`px-3 sm:px-3.5 py-2.5 sm:py-2 rounded-[14px] sm:rounded-[16px] text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all duration-200 cursor-pointer touch-manipulation min-h-[40px] ${
+                      className={`px-3 sm:px-3.5 py-2.5 sm:py-2 rounded-[14px] sm:rounded-[16px] text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-colors duration-150 cursor-pointer touch-manipulation min-h-[40px] relative ${
                         isActive
                           ? 'bg-[#132A86] text-white shadow-md'
                           : 'text-[#4A577D] hover:text-[#0A143A] hover:bg-white/70 active:bg-white'
@@ -379,7 +382,7 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
                     >
                       <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#1FD0C2]' : 'text-[#132A86]'}`} />
                       <span>{tab.label}</span>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -411,12 +414,14 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
                     const Icon = tab.icon;
                     const isActive = activeTab === tab.id;
                     return (
-                      <button
+                      <motion.button
                         key={tab.id}
                         type="button"
                         id={`design-tab-${tab.id}`}
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => setActiveTab(tab.id as any)}
-                        className={`px-3 py-2 sm:py-1.5 rounded-[12px] sm:rounded-[14px] text-xs font-bold flex items-center gap-1.5 whitespace-nowrap transition-all duration-200 cursor-pointer touch-manipulation min-h-[38px] ${
+                        className={`px-3 py-2 sm:py-1.5 rounded-[12px] sm:rounded-[14px] text-xs font-bold flex items-center gap-1.5 whitespace-nowrap transition-colors duration-150 cursor-pointer touch-manipulation min-h-[38px] ${
                           isActive
                             ? 'bg-[#132A86] text-white shadow-sm'
                             : 'text-[#4A577D] hover:text-[#0A143A] hover:bg-white/70 active:bg-white'
@@ -424,7 +429,7 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
                       >
                         <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#1FD0C2]' : 'text-[#132A86]'}`} />
                         <span>{tab.label}</span>
-                      </button>
+                      </motion.button>
                     );
                   })}
                 </div>
@@ -1064,84 +1069,112 @@ export const BuilderSection: React.FC<BuilderSectionProps> = ({
 
           {/* Live Preview Column (Mobile: order-1 top, Desktop: order-2 right lg:col-span-5) */}
           <div className="order-1 lg:order-2 lg:col-span-5 lg:sticky lg:top-24 space-y-4">
-            <div className="liquid-glass-elevated rounded-[26px] sm:rounded-[36px] p-4 sm:p-7 border border-white/90 shadow-xl">
-              
+            <motion.div 
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="liquid-glass-elevated rounded-[26px] sm:rounded-[36px] p-4 sm:p-7 border border-white/90 shadow-xl relative overflow-hidden"
+            >
+              {/* Subtle ambient backdrop glow */}
+              <div className="absolute -top-16 -right-16 w-48 h-48 bg-gradient-to-br from-[#1FD0C2]/15 to-[#132A86]/10 rounded-full blur-2xl pointer-events-none" />
+
               {/* Preview Header */}
-              <div className="flex items-center justify-between mb-3 sm:mb-4 pb-2.5 sm:pb-3 border-b border-[#132A86]/8">
+              <div className="flex items-center justify-between mb-3 sm:mb-4 pb-2.5 sm:pb-3 border-b border-[#132A86]/8 relative z-10">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#1FD0C2] animate-pulse" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#1FD0C2] pulse-radar-ring" />
                   <span className="text-xs font-bold text-[#132A86] uppercase tracking-wider">
                     {t.common.livePreview}
                   </span>
                 </div>
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/50">
                   {lang === 'uz' ? '100% Bepul' : '100% Free'}
                 </span>
               </div>
 
-              {/* Main SVG Render Display */}
-              <div className="bg-white rounded-[22px] sm:rounded-[28px] p-2.5 sm:p-4 flex items-center justify-center mb-4 sm:mb-5 shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6">
-                <div className="w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[300px] flex items-center justify-center">
+              {/* Main SVG Render Display with gentle interactive float */}
+              <div className="bg-white rounded-[22px] sm:rounded-[28px] p-2.5 sm:p-4 flex items-center justify-center mb-4 sm:mb-5 shadow-[inset_0_1px_3px_rgba(19,42,134,0.04)] border border-[#132A86]/6 relative z-10 group transition-shadow duration-300 hover:shadow-md">
+                <div className="w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[300px] flex items-center justify-center transition-transform duration-300 group-hover:scale-[1.015]">
                   <QRRenderer value={qrValue} config={config} sizePx={260} svgId="scanforge-preview-svg" />
                 </div>
               </div>
 
               {/* Quick Contrast Readability Ribbon */}
-              <div className="mb-3.5 sm:mb-4">
+              <div className="mb-3.5 sm:mb-4 relative z-10">
                 <ContrastWarning config={config} onAutoFix={autoFixContrast} />
               </div>
 
               {/* Big Primary Action: Open Liquid Glass Export Modal */}
-              <button
+              <motion.button
                 type="button"
                 id="builder-download-btn"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => setExportModalOpen(true)}
-                className="apple-glass-cta w-full py-3.5 sm:py-4 px-3 rounded-[18px] sm:rounded-[20px] text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 cursor-pointer mb-2.5 sm:mb-3 shadow-lg hover:shadow-xl transition-all touch-manipulation min-h-[46px]"
+                className="apple-glass-cta shimmer-button w-full py-3.5 sm:py-4 px-3 rounded-[18px] sm:rounded-[20px] text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 cursor-pointer mb-2.5 sm:mb-3 shadow-lg hover:shadow-xl transition-shadow touch-manipulation min-h-[46px] relative z-10"
               >
                 <Download className="w-4 h-4 sm:w-5 sm:h-5 text-[#1FD0C2]" />
                 <span className="truncate">
                   {lang === 'uz' ? 'Yuklab Olish (PNG, JPG, PDF, SVG)' : 'Export & Download (PNG, JPG, PDF, SVG)'}
                 </span>
-              </button>
+              </motion.button>
 
               {/* Secondary Action Grid: Copy, Share, Save */}
-              <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-                <button
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2 relative z-10">
+                <motion.button
                   type="button"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.94 }}
                   onClick={handleCopyImage}
                   className="apple-glass-secondary py-2.5 rounded-[16px] text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
                   title={t.builder.export.copyClipboard}
                 >
-                  {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                  {copied ? (
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}>
+                      <Check className="w-4 h-4 text-emerald-600" />
+                    </motion.div>
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
                   <span>{copied ? t.common.copied : t.common.copy}</span>
-                </button>
+                </motion.button>
 
-                <button
+                <motion.button
                   type="button"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.94 }}
                   onClick={handleShare}
                   className="apple-glass-secondary py-2.5 rounded-[16px] text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
                   title={t.builder.export.shareDesign}
                 >
-                  {shared ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4" />}
+                  {shared ? (
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}>
+                      <Check className="w-4 h-4 text-emerald-600" />
+                    </motion.div>
+                  ) : (
+                    <Share2 className="w-4 h-4" />
+                  )}
                   <span>{shared ? t.common.copied : t.common.share}</span>
-                </button>
+                </motion.button>
 
-                <button
+                <motion.button
                   type="button"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.94 }}
                   onClick={onSaveToHistory}
                   className="apple-glass-secondary py-2.5 rounded-[16px] text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
                   title={t.builder.export.saveToHistory}
                 >
                   {saveSuccess ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    </motion.div>
                   ) : (
                     <Bookmark className="w-4 h-4 text-[#132A86]" />
                   )}
                   <span>{saveSuccess ? t.common.saved : t.common.save}</span>
-                </button>
+                </motion.button>
               </div>
 
-            </div>
+            </motion.div>
           </div>
 
         </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
+import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   Repeat, 
@@ -233,69 +234,83 @@ export const DynamicQRSection: React.FC<DynamicQRSectionProps> = ({ onShowToast 
             {lang === 'uz' ? 'Sizning Dinamik QR Kodlaringiz' : 'Your Dynamic QR Codes'}
           </h3>
 
-          <button
+          <motion.button
             type="button"
-            onClick={() => setIsCreating(true)}
-            className="apple-glass-primary py-2.5 px-4 rounded-[16px] text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer shadow-xs hover:scale-[1.02] active:scale-[0.98] transition-transform w-full sm:w-auto touch-manipulation min-h-[42px]"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={() => setIsCreating(!isCreating)}
+            className="apple-glass-primary shimmer-button py-2.5 px-4 rounded-[16px] text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer shadow-xs w-full sm:w-auto touch-manipulation min-h-[42px]"
           >
             <Plus className="w-4 h-4" />
             <span>{lang === 'uz' ? 'Yangi Dinamik QR' : 'Create Dynamic QR'}</span>
-          </button>
+          </motion.button>
         </div>
 
         {/* Create Modal / Accordion */}
-        {isCreating && (
-          <form onSubmit={handleCreateNew} className="liquid-glass-elevated rounded-[24px] p-6 mb-8 border border-[#132A86]/20 shadow-md">
-            <h4 className="text-sm font-bold text-[#0A143A] mb-4">
-              {lang === 'uz' ? 'Yangi Dinamik QR yaratish' : 'Create New Dynamic QR'}
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="text-xs font-medium text-[#4A577D] block mb-1">
-                  {lang === 'uz' ? 'Nomi (o\'zingiz uchun)' : 'Title / Campaign Name'}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="Restoran Flayeri 2026"
-                  className="w-full px-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
-                />
+        <AnimatePresence>
+          {isCreating && (
+            <motion.form 
+              initial={{ opacity: 0, height: 0, y: -10 }}
+              animate={{ opacity: 1, height: 'auto', y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -10 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              onSubmit={handleCreateNew} 
+              className="liquid-glass-elevated rounded-[24px] p-6 mb-8 border border-[#132A86]/20 shadow-md overflow-hidden"
+            >
+              <h4 className="text-sm font-bold text-[#0A143A] mb-4">
+                {lang === 'uz' ? 'Yangi Dinamik QR yaratish' : 'Create New Dynamic QR'}
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="text-xs font-medium text-[#4A577D] block mb-1">
+                    {lang === 'uz' ? 'Nomi (o\'zingiz uchun)' : 'Title / Campaign Name'}
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    placeholder="Restoran Flayeri 2026"
+                    className="w-full px-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-medium text-[#4A577D] block mb-1">
+                    {lang === 'uz' ? 'Boradigan Manzil (Target URL)' : 'Target Destination URL'}
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newTargetUrl}
+                    onChange={(e) => setNewTargetUrl(e.target.value)}
+                    placeholder="https://mysite.uz/promo"
+                    className="w-full px-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="text-xs font-medium text-[#4A577D] block mb-1">
-                  {lang === 'uz' ? 'Boradigan Manzil (Target URL)' : 'Target Destination URL'}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={newTargetUrl}
-                  onChange={(e) => setNewTargetUrl(e.target.value)}
-                  placeholder="https://mysite.uz/promo"
-                  className="w-full px-3 py-2 text-xs rounded-[14px] bg-white border border-[#132A86]/12 focus:border-[#132A86] focus:outline-none"
-                />
+              <div className="flex justify-end gap-2">
+                <motion.button
+                  type="button"
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsCreating(false)}
+                  className="py-2 px-4 rounded-[14px] text-xs font-semibold text-[#4A577D] hover:bg-slate-200/50 cursor-pointer"
+                >
+                  {lang === 'uz' ? 'Bekor qilish' : 'Cancel'}
+                </motion.button>
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="apple-glass-primary py-2 px-5 rounded-[14px] text-xs font-bold text-white cursor-pointer"
+                >
+                  {lang === 'uz' ? 'Yaratish' : 'Save & Generate'}
+                </motion.button>
               </div>
-            </div>
-
-            <div className="flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setIsCreating(false)}
-                className="py-2 px-4 rounded-[14px] text-xs font-semibold text-[#4A577D] hover:bg-slate-200/50 cursor-pointer"
-              >
-                {lang === 'uz' ? 'Bekor qilish' : 'Cancel'}
-              </button>
-              <button
-                type="submit"
-                className="apple-glass-primary py-2 px-5 rounded-[14px] text-xs font-bold text-white cursor-pointer"
-              >
-                {lang === 'uz' ? 'Yaratish' : 'Save & Generate'}
-              </button>
-            </div>
-          </form>
-        )}
+            </motion.form>
+          )}
+        </AnimatePresence>
 
         {/* Dynamic Items List */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -305,8 +320,11 @@ export const DynamicQRSection: React.FC<DynamicQRSectionProps> = ({ onShowToast 
             const isEditing = editingId === item.id;
 
             return (
-              <div
+              <motion.div
                 key={item.id}
+                layout
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
                 className="liquid-glass rounded-[24px] p-5 border border-white/90 shadow-sm flex flex-col sm:flex-row gap-5 items-center justify-between"
               >
                 {/* QR preview */}
@@ -376,26 +394,32 @@ export const DynamicQRSection: React.FC<DynamicQRSectionProps> = ({ onShowToast 
                   {/* Actions */}
                   {!isEditing && (
                     <div className="flex items-center gap-2 pt-2 border-t border-[#132A86]/8">
-                      <button
+                      <motion.button
                         type="button"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.94 }}
                         onClick={() => setEditingId(item.id)}
                         className="p-1.5 rounded-[10px] bg-white border border-[#132A86]/10 text-[#132A86] text-xs font-medium flex items-center gap-1 hover:bg-[#132A86]/5 cursor-pointer"
                         title={lang === 'uz' ? 'Manzilni o\'zgartirish' : 'Change Target URL'}
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                         <span className="text-[11px]">{lang === 'uz' ? 'O\'zgartirish' : 'Edit URL'}</span>
-                      </button>
+                      </motion.button>
 
-                      <button
+                      <motion.button
                         type="button"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.94 }}
                         onClick={() => handleDownloadSingle(item)}
                         className="p-1.5 rounded-[10px] bg-white border border-[#132A86]/10 text-[#132A86] text-xs font-medium flex items-center gap-1 hover:bg-[#132A86]/5 cursor-pointer"
                       >
                         <Download className="w-3.5 h-3.5" />
                         <span className="text-[11px]">PNG</span>
-                      </button>
+                      </motion.button>
 
-                      <a
+                      <motion.a
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.94 }}
                         href={item.targetUrl}
                         target="_blank"
                         rel="noreferrer"
@@ -403,21 +427,23 @@ export const DynamicQRSection: React.FC<DynamicQRSectionProps> = ({ onShowToast 
                         title="Open Target"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
+                      </motion.a>
 
-                      <button
+                      <motion.button
                         type="button"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.94 }}
                         onClick={() => handleDelete(item.id)}
                         className="p-1.5 rounded-[10px] bg-white border border-[#132A86]/10 text-red-500 hover:bg-red-50 ml-auto cursor-pointer"
                         title="Delete"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      </motion.button>
                     </div>
                   )}
                 </div>
 
-              </div>
+              </motion.div>
             );
           })}
         </div>
